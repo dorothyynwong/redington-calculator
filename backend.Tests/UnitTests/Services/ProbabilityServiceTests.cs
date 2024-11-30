@@ -1,5 +1,3 @@
-using NUnit.Framework;
-using System;
 using RedingtonCalculator.Enums;
 using RedingtonCalculator.Services;
 
