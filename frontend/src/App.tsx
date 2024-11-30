@@ -2,15 +2,16 @@ import { useEffect, useState } from 'react'
 import reactLogo from './assets/react.svg'
 import viteLogo from '/vite.svg'
 import './App.css'
-import { getWeather } from './api/api'
+import { getProbability } from './api/probabilityAPI'
+import { ProbabilityOperation } from './models/probabilityModel'
 
 function App() {
   const [count, setCount] = useState(0)
 
-  const fetchWeather = () => {
-    getWeather()
+  const calculateProbability = () => {
+    getProbability({num1: 0.5, num2: 0.5, operation: ProbabilityOperation.CombinedWith})
     .then((response) => {
-      console.log(response.data);
+      console.log(response);
     })
     .catch((error) => {
       console.error(error);
@@ -18,7 +19,7 @@ function App() {
   }
 
   useEffect(() => {
-    fetchWeather();
+    calculateProbability();
   }, []);
 
   return (
