@@ -13,7 +13,7 @@ dotnet restore
 ### Inside the `frontend/` directory
 1. copy .env.template to .env
 2. edit .env to configure backend base url
-3. 
+3. install dependencies with the following command
 ```bash
 npm install
 ```
