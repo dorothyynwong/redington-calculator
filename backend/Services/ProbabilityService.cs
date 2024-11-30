@@ -6,12 +6,15 @@ namespace RedingtonCalculator.Services
     {
         public double Calculate(double num1, double num2, ProbabilityOperation operation)
         {
-            return operation switch
+            switch (operation)
             {
-                ProbabilityOperation.CombinedWith => num1 * num2,
-                ProbabilityOperation.Either => num1 + num2 - (num1 * num2),
-                _ => throw new System.ArgumentException("Invalid operation"),
-            };
+                case ProbabilityOperation.CombinedWith:
+                    return num1 * num2;
+                case ProbabilityOperation.Either:
+                    return num1 + num2 - (num1 * num2);
+                default:
+                    throw new ArgumentException("Invalid operation");
+            }
         }
     }
 }
