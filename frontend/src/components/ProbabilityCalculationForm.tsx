@@ -64,7 +64,8 @@ const ProbabilityCalculationForm = () => {
                     <Grid size={12}>
                         <OperationSelector 
                             operations={Object.values(ProbabilityOperation)}
-                            onSelectChange={handleSelectChange} 
+                            onSelectChange={handleSelectChange}
+                            label="Select Operation"
                         />
                     </Grid>
                     <Grid size={12}>

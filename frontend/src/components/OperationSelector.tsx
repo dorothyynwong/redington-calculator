@@ -1,27 +1,27 @@
 import { FormControl, FormControlLabel, FormLabel, Radio, RadioGroup } from "@mui/material";
-import { ProbabilityOperation } from "../models/probabilityModel";
 
-interface OperationSelectorProps {
-    operations: ProbabilityOperation[];
-    onSelectChange: (value: ProbabilityOperation) => void;
+interface OperationSelectorProps<T> {
+    operations: T[];
+    onSelectChange: (value: T) => void;
+    label: string;
 }
 
-const OperationSelector = ({ operations, onSelectChange }: OperationSelectorProps) => {
+const OperationSelector = <T,>({ operations, onSelectChange, label }: OperationSelectorProps<T>) => {
     return (
         <FormControl>
-            <FormLabel id="operations-label">Operations</FormLabel>
+            <FormLabel id="operations-label">{label}</FormLabel>
             <RadioGroup
                 row
                 aria-labelledby="calculation-functions-label"
                 name="calculation-functions-radio-buttons-group"
-                onChange={(event) => onSelectChange(event.target.value as ProbabilityOperation)}
+                onChange={(event) => onSelectChange(event.target.value as T)}
             >
                 {operations.map((operation) => (
                     <FormControlLabel
-                        key={operation}
-                        value={operation}
+                        key={operation as string}
+                        value={operation as string}
                         control={<Radio />}
-                        label={operation}
+                        label={operation as string}
                     />
                 ))}
             </RadioGroup>
