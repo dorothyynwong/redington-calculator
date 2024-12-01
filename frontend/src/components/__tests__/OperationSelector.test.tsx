@@ -4,7 +4,7 @@ import OperationSelector from "../OperationSelector";
 import { describe, expect, it, vi } from "vitest";
 
 describe("OperationSelector", () => {
-    const operations = ["Add", "Subtract", "Multiply", "Divide"];
+    const operations = ["CombinedWith", "Either"];
     const label = "Select Operation";
     const onSelectChange = vi.fn();
 
@@ -19,16 +19,20 @@ describe("OperationSelector", () => {
     });
 
     it("calls onSelectChange with the correct value when an option is selected", () => {
+        const selectedOperation = operations[1];
+
         render(<OperationSelector operations={operations} onSelectChange={onSelectChange} label={label} />);
 
-        fireEvent.click(screen.getByLabelText("Subtract"));
+        fireEvent.click(screen.getByLabelText(selectedOperation));
 
-        expect(onSelectChange).toHaveBeenCalledWith("Subtract");
+        expect(onSelectChange).toHaveBeenCalledWith(selectedOperation);
     });
 
     it("sets the default selected value correctly", () => {
+        const selectedOperation = operations[0];
+
         render(<OperationSelector operations={operations} onSelectChange={onSelectChange} label={label} />);
 
-        expect(screen.getByLabelText(operations[0])).toBeChecked();
+        expect(screen.getByLabelText(selectedOperation)).toBeChecked();
     });
 });

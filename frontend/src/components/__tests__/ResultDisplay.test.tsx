@@ -5,8 +5,8 @@ import '@testing-library/jest-dom';
 
 describe('ResultDisplay Component', () => {
     it('should display the correct operation and result', () => {
-        const result = "42";
-        const operation = "CombinedWith";
+        const result = "0.5";
+        const operation = "Either";
 
         render(<ResultDisplay result={result} operation={operation} />);
 
@@ -14,7 +14,7 @@ describe('ResultDisplay Component', () => {
         expect(screen.getByText(result)).toBeInTheDocument();
     });
 
-    it('should render without crashing', () => {
+    it('should render properly if result is 0', () => {
         const result = "0";
         const operation = "CombinedWith";
 
