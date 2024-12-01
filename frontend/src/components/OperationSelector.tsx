@@ -6,7 +6,7 @@ interface OperationSelectorProps {
     label: string;
 }
 
-const OperationSelector = ({ operations, onSelectChange, label }: OperationSelectorProps) => {
+const OperationSelector:React.FC<OperationSelectorProps> = ({ operations, onSelectChange, label }) => {
     return (
         <FormControl>
             <FormLabel id="operations-label">{label}</FormLabel>
