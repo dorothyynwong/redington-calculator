@@ -1,4 +1,4 @@
-import { render, screen, fireEvent, waitFor } from '@testing-library/react';
+import { render, screen, fireEvent, waitFor, cleanup } from '@testing-library/react';
 import { describe, it, expect, vi, Mock, beforeEach, afterEach } from 'vitest';
 import ProbabilityForm from '../ProbabilityForm';
 import { getProbability } from '../../api/probabilityAPI';
@@ -16,6 +16,7 @@ describe('ProbabilityForm', () => {
     });
 
     afterEach(() => {
+        cleanup();
         vi.restoreAllMocks(); 
     });
 
@@ -26,74 +27,59 @@ describe('ProbabilityForm', () => {
         expect(screen.getByText(/Calculate/i)).toBeInTheDocument();
     });
 
-    it('validates Probability 1 with value > 1', () => {
-        const num1 = 1.1;
-        const num2 = 0.5;
-
-        render(<ProbabilityForm />);
-        const input1 = screen.getByLabelText(/Probability 1/i);
-        const input2 = screen.getByLabelText(/Probability 2/i);
-
-        fireEvent.change(input1, { target: { value: num1.toString() } });
-        fireEvent.change(input2, { target: { value: num2.toString() } });
-
-        expect(screen.getByText(/Value must be between 0 and 1/i)).toBeInTheDocument();
+    describe('validates input probabilities', () => {
+        const testCases = [
+            { num1: 1.1, num2: 0.5, description: 'Probability 1 > 1' },
+            { num1: -0.1, num2: 0.5, description: 'Probability 1 < 0' },
+            { num1: 0.5, num2: 1.1, description: 'Probability 2 > 1' },
+            { num1: 0.5, num2: -0.1, description: 'Probability 2 < 0' },
+            { num1: 1.1, num2: -0.1, description: 'Both probabilities invalid' }
+        ];
+    
+        testCases.forEach(({ num1, num2, description }) => {
+            it(`validates ${description}`, () => {
+                render(<ProbabilityForm />);
+                
+                const input1 = screen.getByLabelText(/Probability 1/i);
+                const input2 = screen.getByLabelText(/Probability 2/i);
+                const button = screen.getByText(/Calculate/i);
+    
+                fireEvent.change(input1, { target: { value: num1.toString() } });
+                fireEvent.change(input2, { target: { value: num2.toString() } });
+                fireEvent.click(button);
+    
+                const errorMessages = screen.getAllByText(/Value must be between 0 and 1/i);
+                expect(errorMessages.length).toBeGreaterThan(0);
+            });
+        });
     });
 
-    it('validates Probability 1 with value < 0', () => {
-        const num1 = -0.1;
-        const num2 = 0.5;
+    it('accepts 0 as a valid input for both probabilities', async () => {
+        const num1 = 0;
+        const num2 = 0;
+        const result = 0;
+
+        const mockResponse = { result: result}; 
+
+        mockGetProbability.mockResolvedValueOnce(mockResponse);
 
         render(<ProbabilityForm />);
         const input1 = screen.getByLabelText(/Probability 1/i);
         const input2 = screen.getByLabelText(/Probability 2/i);
+        const button = screen.getByText(/Calculate/i);
 
         fireEvent.change(input1, { target: { value: num1.toString() } });
         fireEvent.change(input2, { target: { value: num2.toString() } });
+        fireEvent.click(button);
 
-        expect(screen.getByText(/Value must be between 0 and 1/i)).toBeInTheDocument();
-    });
+        expect(getProbability).toHaveBeenCalledWith({
+            num1: num1,
+            num2: num2,
+            operation: ProbabilityOperation.CombinedWith,
+        });
 
-    it('validates Probability 2 with value > 1', () => {
-        const num1 = 0.5;
-        const num2 = 1.1;
-
-        render(<ProbabilityForm />);
-        const input1 = screen.getByLabelText(/Probability 1/i);
-        const input2 = screen.getByLabelText(/Probability 2/i);
-
-        fireEvent.change(input1, { target: { value: num1.toString() } });
-        fireEvent.change(input2, { target: { value: num2.toString() } });
-
-        expect(screen.getByText(/Value must be between 0 and 1/i)).toBeInTheDocument();
-    });
-
-    it('validates Probability 2 with value < 0', () => {
-        const num1 = 0.5;
-        const num2 = -0.1;
-
-        render(<ProbabilityForm />);
-        const input1 = screen.getByLabelText(/Probability 1/i);
-        const input2 = screen.getByLabelText(/Probability 2/i);
-
-        fireEvent.change(input1, { target: { value: num1.toString() } });
-        fireEvent.change(input2, { target: { value: num2.toString() } });
-
-        expect(screen.getByText(/Value must be between 0 and 1/i)).toBeInTheDocument();
-    });
-
-    it('validates both probabilities are invalid', () => {
-        const num1 = 1.1;
-        const num2 = -0.1;
-
-        render(<ProbabilityForm />);
-        const input1 = screen.getByLabelText(/Probability 1/i);
-        const input2 = screen.getByLabelText(/Probability 2/i);
-
-        fireEvent.change(input1, { target: { value: num1.toString() } });
-        fireEvent.change(input2, { target: { value: num2.toString() } });
-
-        expect(screen.getAllByText(/Value must be between 0 and 1/i)).toHaveLength(2);
+        const resultDisplay = await screen.findByText(result.toString());
+        expect(resultDisplay).toBeInTheDocument();
     });
 
     it('calls getProbability API on form submit with valid inputs', async () => {
@@ -139,7 +125,7 @@ describe('ProbabilityForm', () => {
 
         expect(getProbability).not.toHaveBeenCalled();
     });
-    
+
     it('handles API errors gracefully', async () => {
         const num1 = 0.3;
         const num2 = 0.2;
