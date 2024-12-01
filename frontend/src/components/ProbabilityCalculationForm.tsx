@@ -6,34 +6,32 @@ import Grid from '@mui/material/Grid2';
 import OperationSelector from "./OperationSelector";
 
 const ProbabilityCalculationForm = () => {
-    const [num1, setNum1] = useState("0");
-    const [num2, setNum2] = useState("0");
+    const [numbers, setNumbers] = useState<string[]>(["0", "0"]);
+    const [errors, setErrors] = useState<boolean[]>([false, false]);
     const [result, setResult] = useState<ProbabilityResponse>();
-    const [num1Error, setNum1Error] = useState<boolean>(false);
-    const [num2Error, setNum2Error] = useState<boolean>(false);
-    const [calculationFunction, setCalculationFunction] = useState<ProbabilityOperation>(ProbabilityOperation.CombinedWith);
+    const [selectedOperation, setSelectedOperation] = useState<ProbabilityOperation>(ProbabilityOperation.CombinedWith);
 
-    const handleInputChange = (setter: React.Dispatch<React.SetStateAction<string>>,
-        setError: React.Dispatch<React.SetStateAction<boolean>>) =>
-        (e: React.ChangeEvent<HTMLInputElement>) => {
-            const value = e.target.value;
-            const numericValue = parseFloat(value);
-            setter(value);
-            setError(value === "" || (numericValue >= 0 && numericValue <= 1) ? false : true);
-        };
-
-    const handleNum1Change = handleInputChange(setNum1, setNum1Error);
-    const handleNum2Change = handleInputChange(setNum2, setNum2Error);
+    const handleInputChange = (index: number) => (e: React.ChangeEvent<HTMLInputElement>) => {
+        const value = e.target.value;
+        const numericValue = parseFloat(value);
+        const newNumbers = [...numbers];
+        const newErrors = [...errors];
+        newNumbers[index] = value;
+        newErrors[index] = value === "" || (numericValue >= 0 && numericValue <= 1) ? false : true;
+        setNumbers(newNumbers);
+        setErrors(newErrors);
+    };
 
     const handleSelectChange = (key: string) => {
         const value = ProbabilityOperation[key as keyof typeof ProbabilityOperation];
-        setCalculationFunction(value);
+        console.log(`key ${key}, value ${value}`);
+        setSelectedOperation(value);
     };
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
-        if (!num1Error && !num2Error) {
-            getProbability({ num1: parseFloat(num1), num2: parseFloat(num2), operation: calculationFunction })
+        if (!errors.some(error => error)) {
+            getProbability({ num1: parseFloat(numbers[0]), num2: parseFloat(numbers[1]), operation: selectedOperation })
                 .then((response) => {
                     setResult(response);
                 })
@@ -47,25 +45,26 @@ const ProbabilityCalculationForm = () => {
         <form onSubmit={handleSubmit}>
             <Box sx={{ flexGrow: 1 }}>
                 <Grid container rowSpacing={1} columnSpacing={{ xs: 1, sm: 2, md: 3 }}>
-                    {["Probability 1", "Probability 2"].map((label, index) => (
-                        <Grid size={6} key={label}>
+                    {numbers.map((_, index) => (
+                        <Grid size={6} key={index}>
                             <TextField
-                                label={label}
+                                label={`Probability ${index + 1}`}
                                 type="number"
-                                value={index === 0 ? num1 : num2}
-                                onChange={index === 0 ? handleNum1Change : handleNum2Change}
+                                value={numbers[index]}
+                                onChange={handleInputChange(index)}
                                 fullWidth
                                 variant="outlined"
-                                error={index === 0 ? num1Error : num2Error}
-                                helperText={index === 0 ? (num1Error ? "Value must be between 0 and 1" : "") : (num2Error ? "Value must be between 0 and 1" : "")}
+                                error={errors[index]}
+                                helperText={errors[index] ? "Value must be between 0 and 1" : ""}
+                                slotProps={{ htmlInput: { step: 0.01 } }}
                             />
                         </Grid>
                     ))}
                     <Grid size={12}>
                         <OperationSelector 
-                            operations={Object.values(ProbabilityOperation)}
+                            operations={Object.keys(ProbabilityOperation)}
                             onSelectChange={handleSelectChange}
-                            label="Select Operation"
+                            label="Select Probability Operation"
                         />
                     </Grid>
                     <Grid size={12}>

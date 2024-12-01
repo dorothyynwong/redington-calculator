@@ -1,12 +1,12 @@
 import { FormControl, FormControlLabel, FormLabel, Radio, RadioGroup } from "@mui/material";
 
-interface OperationSelectorProps<T> {
-    operations: T[];
-    onSelectChange: (value: T) => void;
+interface OperationSelectorProps {
+    operations: string[];
+    onSelectChange: (value: string) => void;
     label: string;
 }
 
-const OperationSelector = <T,>({ operations, onSelectChange, label }: OperationSelectorProps<T>) => {
+const OperationSelector = ({ operations, onSelectChange, label }: OperationSelectorProps) => {
     return (
         <FormControl>
             <FormLabel id="operations-label">{label}</FormLabel>
@@ -14,14 +14,15 @@ const OperationSelector = <T,>({ operations, onSelectChange, label }: OperationS
                 row
                 aria-labelledby="calculation-functions-label"
                 name="calculation-functions-radio-buttons-group"
-                onChange={(event) => onSelectChange(event.target.value as T)}
+                defaultValue={operations[0] as string}
+                onChange={(event) => onSelectChange(event.target.value)}
             >
                 {operations.map((operation) => (
                     <FormControlLabel
-                        key={operation as string}
-                        value={operation as string}
+                        key={operation}
+                        value={operation}
                         control={<Radio />}
-                        label={operation as string}
+                        label={operation}
                     />
                 ))}
             </RadioGroup>
