@@ -13,6 +13,7 @@ const ProbabilityForm = () => {
     const [selectedOperation, setSelectedOperation] = useState<ProbabilityOperation>(ProbabilityOperation.CombinedWith);
 
     const handleInputChange = (index: number) => (e: React.ChangeEvent<HTMLInputElement>) => {
+        setResult(undefined);
         const value = e.target.value;
         const numericValue = parseFloat(value);
         const newNumbers = [...numbers];
