@@ -74,7 +74,7 @@ const ProbabilityCalculationForm = () => {
                     </Grid>
                 </Grid>
             </Box>
-            {result !== null && (
+            {result && (
                 <Typography variant="h6" style={{ marginTop: "20px" }}>
                     Result: {result?.result}
                 </Typography>
