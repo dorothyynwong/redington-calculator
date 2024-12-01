@@ -73,7 +73,7 @@ namespace RedingtonCalculator.Tests
         [TestCase(0.5, 1.01, ProbabilityOperation.CombinedWith)]
         [TestCase(1.01, 0.5, ProbabilityOperation.Either)]
         [TestCase(0.5, 1.01, ProbabilityOperation.Either)]
-        public void Calculate_Num1OutOfRange_ThrowsArgumentOutOfRangeException(double num1, double num2, ProbabilityOperation operation)
+        public void Calculate_OutOfRangeProbabilities_ThrowsArgumentOutOfRangeException(double num1, double num2, ProbabilityOperation operation)
         {
             var request = new ProbabilityRequest
             {
@@ -94,6 +94,32 @@ namespace RedingtonCalculator.Tests
 
             var badRequestResult = response as BadRequestObjectResult;
             Assert.That(badRequestResult!.Value, Is.EqualTo(expectedMessage));
+        }
+
+        [TestCase(0, 0, ProbabilityOperation.CombinedWith, 0)]
+        [TestCase(0, 0, ProbabilityOperation.Either, 0)]
+        [TestCase(1, 1, ProbabilityOperation.CombinedWith, 1)]
+        [TestCase(1, 1, ProbabilityOperation.Either, 1)]
+        public void Calculate_ValidOperationBoundaryProbabilities_ReturnsExpectedResponse(double num1, double num2, ProbabilityOperation operation, double expected)
+        {
+            var request = new ProbabilityRequest
+            {
+                Num1 = num1,
+                Num2 = num2,
+                Operation = operation
+            };
+
+            _mockCalculatorService!
+                .Setup(s => s.Calculate(request.Num1, request.Num2, request.Operation))
+                .Returns(expected);
+
+            var result = _controller!.Calculate(request);
+
+            Assert.That(result, Is.InstanceOf<OkObjectResult>());
+
+            var okResult = result as OkObjectResult;
+            var probabilityResponse = okResult!.Value as ProbabilityResponse;
+            Assert.That(probabilityResponse!.Result, Is.EqualTo(expected));
         }
     }
 }
