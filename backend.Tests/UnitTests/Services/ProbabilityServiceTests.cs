@@ -20,7 +20,28 @@ namespace RedingtonCalculator.Tests
         {
             var result = _probabilityService!.Calculate(num1, num2, operation);
 
-            Assert.That(result, Is.EqualTo(expected).Within(1e-5));
+            Assert.That(result, Is.EqualTo(expected));
+        }
+
+        [TestCase(0, 0, ProbabilityOperation.CombinedWith, 0)]
+        [TestCase(0, 0, ProbabilityOperation.Either, 0)]
+        [TestCase(1, 1, ProbabilityOperation.CombinedWith, 1)]
+        [TestCase(1, 1, ProbabilityOperation.Either, 1)]
+        public void Calculate_BoundaryInputsValidOperations_ReturnsExpectedResult(double num1, double num2, ProbabilityOperation operation, double expected)
+        {
+            var result = _probabilityService!.Calculate(num1, num2, operation);
+
+            Assert.That(result, Is.EqualTo(expected));
+        }
+
+        [TestCase(1.01, 0.5, ProbabilityOperation.CombinedWith)]
+        [TestCase(0.5, 1.01, ProbabilityOperation.CombinedWith)]
+        [TestCase(1.01, 0.5, ProbabilityOperation.Either)]
+        [TestCase(0.5, 1.01, ProbabilityOperation.Either)]
+        public void Calculate_InvalidProbabilitiesValidOperations_ThrowsArgumentException(double num1, double num2, ProbabilityOperation operation)
+        {
+            Assert.Throws<ArgumentException>(() => 
+                _probabilityService!.Calculate(num1, num2, operation));
         }
 
         [Test]
