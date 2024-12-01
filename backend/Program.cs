@@ -1,12 +1,25 @@
+using NLog;
 using RedingtonCalculator.Enums;
 using RedingtonCalculator.Services;
 
 var builder = WebApplication.CreateBuilder(args);
+NLog.ILogger Logger = LogManager.GetCurrentClassLogger();
+string currentDirectory = Directory.GetCurrentDirectory();
+
+var config = new NLog.Config.LoggingConfiguration();
+
+var fileTarget = new NLog.Targets.FileTarget("logfile")
+{
+    FileName = Path.Combine(currentDirectory, "Logs/logfile.txt"),
+    Layout = "${longdate} ${level} ${message} ${exception}"
+};
+
+config.AddTarget(fileTarget);
+config.AddRule(NLog.LogLevel.Info, NLog.LogLevel.Fatal, fileTarget);
+LogManager.Configuration = config;
 
 builder.Services.AddTransient<ICalculatorService<ProbabilityOperation>, ProbabilityService>();
 
-// Add services to the container.
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
@@ -24,7 +37,6 @@ builder.Services.AddControllers();
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
