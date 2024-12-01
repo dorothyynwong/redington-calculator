@@ -57,5 +57,44 @@ namespace RedingtonCalculator.Tests
 
             Assert.Throws<ArgumentException>(() => _controller!.Calculate(request));
         }
+
+        // [Test]
+        // public void Calculate_Num1OutOfRange_ThrowsArgumentOutOfRangeException()
+        // {
+        //     var request = new ProbabilityRequest
+        //     {
+        //         Num1 = 1.5,
+        //         Num2 = 0.5,
+        //         Operation = ProbabilityOperation.CombinedWith
+        //     };
+
+        //     Assert.Throws<ArgumentOutOfRangeException>(() => _controller!.Calculate(request));
+        // }
+
+        // [Test]
+        // public void Calculate_Num2OutOfRange_ThrowsArgumentOutOfRangeException()
+        // {
+        //     var request = new ProbabilityRequest
+        //     {
+        //         Num1 = 0.5,
+        //         Num2 = 1.5,
+        //         Operation = ProbabilityOperation.CombinedWith
+        //     };
+
+        //     Assert.Throws<ArgumentOutOfRangeException>(() => _controller!.Calculate(request));
+        // }
+
+        // [Test]
+        // public void Calculate_Num1AndNum2OutOfRange_ThrowsArgumentOutOfRangeException()
+        // {
+        //     var request = new ProbabilityRequest
+        //     {
+        //         Num1 = 1.5,
+        //         Num2 = 1.5,
+        //         Operation = ProbabilityOperation.CombinedWith
+        //     };
+
+        //     Assert.Throws<ArgumentOutOfRangeException>(() => _controller!.Calculate(request));
+        // }
     }
 }

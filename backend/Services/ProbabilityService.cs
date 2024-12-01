@@ -8,7 +8,7 @@ namespace RedingtonCalculator.Services
         {
             if (num1 < 0 || num1 > 1 || num2 < 0 || num2 > 1)
             {
-                throw new ArgumentException("Invalid probability");
+                throw new ArgumentOutOfRangeException("Probabilities must be between 0 and 1");
             }
             
             switch (operation)
