@@ -17,11 +17,21 @@ namespace RedingtonCalculator.Controllers
         }
 
         [HttpPost]
-        public ProbabilityResponse Calculate([FromBody] ProbabilityRequest request)
+        public IActionResult Calculate([FromBody] ProbabilityRequest request)
         {
+            if (!Enum.IsDefined(typeof(ProbabilityOperation), request.Operation))
+            {
+                return BadRequest("Invalid Operation");
+            }
+
+            if (request.Num1 < 0 || request.Num1 > 1 || request.Num2 < 0 || request.Num2 > 1)
+            {
+                return BadRequest("Probabilities must be between 0 and 1");
+            }
+
             var result = _calculatorService.Calculate(request.Num1, request.Num2, request.Operation);
 
-            return new ProbabilityResponse { Result = result };
+            return Ok(new ProbabilityResponse { Result = result });
         }
     }
 }

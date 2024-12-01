@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Mvc;
 using Moq;
 using RedingtonCalculator.Controllers;
 using RedingtonCalculator.Enums;
@@ -35,10 +36,13 @@ namespace RedingtonCalculator.Tests
                 .Setup(s => s.Calculate(request.Num1, request.Num2, request.Operation))
                 .Returns(expectedResult);
 
-            var response = _controller!.Calculate(request);
+            var result = _controller!.Calculate(request);
 
-            Assert.That(response, Is.Not.Null);
-            Assert.That(response.Result, Is.EqualTo(expectedResult));
+            Assert.That(result, Is.InstanceOf<OkObjectResult>());
+
+            var okResult = result as OkObjectResult;
+            var probabilityResponse = okResult!.Value as ProbabilityResponse;
+            Assert.That(probabilityResponse!.Result, Is.EqualTo(expectedResult));
         }
 
         [Test]
@@ -51,50 +55,45 @@ namespace RedingtonCalculator.Tests
                 Operation = (ProbabilityOperation)999 
             };
 
+            var expectedMessage = "Invalid Operation";
+
             _mockCalculatorService!
                 .Setup(s => s.Calculate(It.IsAny<double>(), It.IsAny<double>(), It.IsAny<ProbabilityOperation>()))
-                .Throws<ArgumentException>();
+                .Throws(new ArgumentException("Invalid Operation"));
 
-            Assert.Throws<ArgumentException>(() => _controller!.Calculate(request));
+            var response = _controller!.Calculate(request);
+
+            Assert.That(response, Is.InstanceOf<BadRequestObjectResult>());
+
+            var badRequestResult = response as BadRequestObjectResult;
+            Assert.That(badRequestResult!.Value, Is.EqualTo(expectedMessage));
         }
 
-        // [Test]
-        // public void Calculate_Num1OutOfRange_ThrowsArgumentOutOfRangeException()
-        // {
-        //     var request = new ProbabilityRequest
-        //     {
-        //         Num1 = 1.5,
-        //         Num2 = 0.5,
-        //         Operation = ProbabilityOperation.CombinedWith
-        //     };
+        [TestCase(1.01, 0.5, ProbabilityOperation.CombinedWith)]
+        [TestCase(0.5, 1.01, ProbabilityOperation.CombinedWith)]
+        [TestCase(1.01, 0.5, ProbabilityOperation.Either)]
+        [TestCase(0.5, 1.01, ProbabilityOperation.Either)]
+        public void Calculate_Num1OutOfRange_ThrowsArgumentOutOfRangeException(double num1, double num2, ProbabilityOperation operation)
+        {
+            var request = new ProbabilityRequest
+            {
+                Num1 = num1,
+                Num2 = num2,
+                Operation = operation
+            };
 
-        //     Assert.Throws<ArgumentOutOfRangeException>(() => _controller!.Calculate(request));
-        // }
+            var expectedMessage = "Probabilities must be between 0 and 1";
 
-        // [Test]
-        // public void Calculate_Num2OutOfRange_ThrowsArgumentOutOfRangeException()
-        // {
-        //     var request = new ProbabilityRequest
-        //     {
-        //         Num1 = 0.5,
-        //         Num2 = 1.5,
-        //         Operation = ProbabilityOperation.CombinedWith
-        //     };
+            _mockCalculatorService!
+                .Setup(s => s.Calculate(It.IsAny<double>(), It.IsAny<double>(), It.IsAny<ProbabilityOperation>()))
+                .Throws(new ArgumentOutOfRangeException("Probabilities must be between 0 and 1"));
 
-        //     Assert.Throws<ArgumentOutOfRangeException>(() => _controller!.Calculate(request));
-        // }
+            var response = _controller!.Calculate(request);
 
-        // [Test]
-        // public void Calculate_Num1AndNum2OutOfRange_ThrowsArgumentOutOfRangeException()
-        // {
-        //     var request = new ProbabilityRequest
-        //     {
-        //         Num1 = 1.5,
-        //         Num2 = 1.5,
-        //         Operation = ProbabilityOperation.CombinedWith
-        //     };
+            Assert.That(response, Is.InstanceOf<BadRequestObjectResult>());
 
-        //     Assert.Throws<ArgumentOutOfRangeException>(() => _controller!.Calculate(request));
-        // }
+            var badRequestResult = response as BadRequestObjectResult;
+            Assert.That(badRequestResult!.Value, Is.EqualTo(expectedMessage));
+        }
     }
 }
