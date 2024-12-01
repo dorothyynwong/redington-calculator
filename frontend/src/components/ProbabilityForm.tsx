@@ -25,7 +25,6 @@ const ProbabilityForm = () => {
 
     const handleSelectChange = (key: string) => {
         const value = ProbabilityOperation[key as keyof typeof ProbabilityOperation];
-        console.log(`key ${key}, value ${value}`);
         setSelectedOperation(value);
         setResult(undefined); 
     };

@@ -3,7 +3,6 @@ import { ProbabilityRequest, ProbabilityResponse } from '../models/probabilityMo
 import { client } from './apiClient';
 
 export async function getProbability(data: ProbabilityRequest): Promise<ProbabilityResponse> {
-    console.log(data.operation)
     try {
         const response: AxiosResponse<ProbabilityResponse> = await client.post('probabilities', data);
         return response.data; 
