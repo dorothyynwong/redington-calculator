@@ -82,6 +82,20 @@ describe('ProbabilityForm', () => {
         expect(screen.getByText(/Value must be between 0 and 1/i)).toBeInTheDocument();
     });
 
+    it('validates both probabilities are invalid', () => {
+        const num1 = 1.1;
+        const num2 = -0.1;
+
+        render(<ProbabilityForm />);
+        const input1 = screen.getByLabelText(/Probability 1/i);
+        const input2 = screen.getByLabelText(/Probability 2/i);
+
+        fireEvent.change(input1, { target: { value: num1.toString() } });
+        fireEvent.change(input2, { target: { value: num2.toString() } });
+
+        expect(screen.getAllByText(/Value must be between 0 and 1/i)).toHaveLength(2);
+    });
+
     it('calls getProbability API on form submit with valid inputs', async () => {
         const num1 = 0.3;
         const num2 = 0.2;
@@ -110,6 +124,22 @@ describe('ProbabilityForm', () => {
         expect(resultDisplay).toBeInTheDocument();
     });
 
+    it('does not call getProbability API if either probability is invalid', () => {
+        const num1 = 1.1;
+        const num2 = 0.5;
+
+        render(<ProbabilityForm />);
+        const input1 = screen.getByLabelText(/Probability 1/i);
+        const input2 = screen.getByLabelText(/Probability 2/i);
+        const button = screen.getByText(/Calculate/i);
+
+        fireEvent.change(input1, { target: { value: num1.toString() } });
+        fireEvent.change(input2, { target: { value: num2.toString() } });
+        fireEvent.click(button);
+
+        expect(getProbability).not.toHaveBeenCalled();
+    });
+    
     it('handles API errors gracefully', async () => {
         const num1 = 0.3;
         const num2 = 0.2;
