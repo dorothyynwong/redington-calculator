@@ -1,11 +1,11 @@
 import './App.css'
-import ProbabilityCalculationForm from './components/ProbabilityCalculationForm'
+import ProbabilityForm from './components/ProbabilityForm'
 
 function App() {
 
   return (
     <>
-      <ProbabilityCalculationForm />
+      <ProbabilityForm />
     </>
   )
 }

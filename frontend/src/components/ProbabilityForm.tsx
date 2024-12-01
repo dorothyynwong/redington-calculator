@@ -1,11 +1,12 @@
 import { useState } from "react";
 import { ProbabilityOperation, ProbabilityResponse } from "../models/probabilityModel";
 import { getProbability } from "../api/probabilityAPI";
-import { Box, Button, TextField, Typography } from "@mui/material";
+import { Box, Button, TextField } from "@mui/material";
 import Grid from '@mui/material/Grid2';
 import OperationSelector from "./OperationSelector";
+import ResultDisplay from "./ResultDisplay";
 
-const ProbabilityCalculationForm = () => {
+const ProbabilityForm = () => {
     const [numbers, setNumbers] = useState<string[]>(["0", "0"]);
     const [errors, setErrors] = useState<boolean[]>([false, false]);
     const [result, setResult] = useState<ProbabilityResponse>();
@@ -26,6 +27,7 @@ const ProbabilityCalculationForm = () => {
         const value = ProbabilityOperation[key as keyof typeof ProbabilityOperation];
         console.log(`key ${key}, value ${value}`);
         setSelectedOperation(value);
+        setResult(undefined); 
     };
 
     const handleSubmit = async (e: React.FormEvent) => {
@@ -61,7 +63,7 @@ const ProbabilityCalculationForm = () => {
                         </Grid>
                     ))}
                     <Grid size={12}>
-                        <OperationSelector 
+                        <OperationSelector
                             operations={Object.keys(ProbabilityOperation)}
                             onSelectChange={handleSelectChange}
                             label="Select Probability Operation"
@@ -73,14 +75,17 @@ const ProbabilityCalculationForm = () => {
                         </Button>
                     </Grid>
                 </Grid>
+                <Grid size={12}>
+                    { result &&
+                        <ResultDisplay 
+                            result={result ? result.result.toString() : ''} 
+                            operation={selectedOperation} 
+                        />
+        }
+                </Grid>
             </Box>
-            {result && (
-                <Typography variant="h6" style={{ marginTop: "20px" }}>
-                    Result: {result?.result}
-                </Typography>
-            )}
         </form>
     );
 };
 
-export default ProbabilityCalculationForm;
+export default ProbabilityForm;
