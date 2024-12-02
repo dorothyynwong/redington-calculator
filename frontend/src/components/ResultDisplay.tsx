@@ -7,7 +7,7 @@ interface ResultDisplayProps {
 
 const ResultDisplay: React.FC<ResultDisplayProps> = ({ result, operation }) => {
     return (
-        <Box sx={{ flexGrow: 1 }}>
+        <Box sx={{ flexGrow: 1 }} aria-label="Result Display">
             <Typography variant="h5" gutterBottom>
                 Result for {operation}
             </Typography>

@@ -9,22 +9,22 @@ interface OperationSelectorProps {
 const OperationSelector:React.FC<OperationSelectorProps> = ({ operations, onSelectChange, label }) => {
     return (
         <FormControl>
-            <FormLabel id="operations-label">{label}</FormLabel>
+            <FormLabel id="operations-label" aria-label="Operation Selector">{label}</FormLabel>
             <RadioGroup
-                row
-                aria-labelledby="calculation-functions-label"
-                name="calculation-functions-radio-buttons-group"
-                defaultValue={operations[0] as string}
-                onChange={(event) => onSelectChange(event.target.value)}
+            row
+            aria-labelledby="operations-label"
+            name="calculation-functions-radio-buttons-group"
+            defaultValue={operations[0] as string}
+            onChange={(event) => onSelectChange(event.target.value)}
             >
-                {operations.map((operation) => (
-                    <FormControlLabel
-                        key={operation}
-                        value={operation}
-                        control={<Radio />}
-                        label={operation}
-                    />
-                ))}
+            {operations.map((operation) => (
+                <FormControlLabel
+                key={operation}
+                value={operation}
+                control={<Radio />}
+                label={operation}
+                />
+            ))}
             </RadioGroup>
         </FormControl>
     );
