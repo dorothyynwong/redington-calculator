@@ -42,4 +42,10 @@ describe("NumericInput Component", () => {
         render(<NumericInput {...defaultProps} error={false} />);
         expect(screen.queryByText("Value must be between 0 and 1")).not.toBeInTheDocument();
     });
+
+    it("has input type as number", () => {
+        render(<NumericInput {...defaultProps} />);
+        const input = screen.getByLabelText(defaultProps.label);
+        expect(input).toHaveAttribute("type", "number");
+    });
 });
