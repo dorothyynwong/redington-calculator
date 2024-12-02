@@ -12,8 +12,6 @@ vi.mock('../utilities/probabilityValidation', () => ({
     isValidProbability: (value: string) => mockIsValidProbability(value),
 }));
 
-// const mockOnOperationChange = vi.fn();
-// const mockOnResultCalculated = vi.fn();
 const mockIsValidProbability = vi.fn((value: string) => !isNaN(parseFloat(value)) && parseFloat(value) >= 0 && parseFloat(value) <= 1);
 
 describe('ProbabilityForm', () => {
