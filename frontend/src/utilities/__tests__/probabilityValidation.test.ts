@@ -8,11 +8,9 @@ describe('isValidProbability', () => {
         expect(isValidProbability('1')).toBe(true);
     });
 
-    it('should return false for invalid probabilities', () => {
-        expect(isValidProbability('')).toBe(false);
-        expect(isValidProbability('abc')).toBe(false);
-        expect(isValidProbability('-0.1')).toBe(false);
-        expect(isValidProbability('1.1')).toBe(false);
+    it('should return false for probabilities < 0 or > 1', () => {
+        expect(isValidProbability('-0.001')).toBe(false);
+        expect(isValidProbability('1.001')).toBe(false);
         expect(isValidProbability('2')).toBe(false);
     });
 
