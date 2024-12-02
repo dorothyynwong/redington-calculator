@@ -25,7 +25,7 @@ describe("NumericInput Component", () => {
     });
 
     it("calls onChange with correct parameters when input changes", () => {
-        const value = 0.7;
+        const value = "0.7";
 
         render(<NumericInput {...defaultProps} />);
         const input = screen.getByLabelText(defaultProps.label);
