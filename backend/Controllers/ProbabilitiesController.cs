@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
+using NLog;
 using RedingtonCalculator.Enums;
 using RedingtonCalculator.Models;
 using RedingtonCalculator.Services;
@@ -29,9 +30,19 @@ namespace RedingtonCalculator.Controllers
                 return BadRequest("Probabilities must be between 0 and 1");
             }
 
-            var result = _calculatorService.Calculate(request.Num1, request.Num2, request.Operation);
-
-            return Ok(new ProbabilityResponse { Result = result });
+            try
+            {
+                var result = _calculatorService.Calculate(request.Num1, request.Num2, request.Operation);
+                return Ok(new ProbabilityResponse { Result = result });
+            }
+            catch (ArgumentOutOfRangeException e)
+            {
+                return BadRequest(e.Message);
+            }
+            catch (ArgumentException e)
+            {
+                return BadRequest(e.Message);
+            }
         }
     }
 }
