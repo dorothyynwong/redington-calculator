@@ -94,4 +94,67 @@ describe('ProbabilityForm', () => {
 
         await waitFor(() => expect(console.error).toHaveBeenCalled());
     });
+
+    it('displays loading indicator when form is submitted', async () => {
+        const num1 = 0.3;
+        const num2 = 0.2;
+        const result = 0.06;
+    
+        const mockResponse = { result: result };
+    
+        mockGetProbability.mockResolvedValueOnce(mockResponse);
+    
+        const input1 = screen.getByLabelText(/Probability 1/i);
+        const input2 = screen.getByLabelText(/Probability 2/i);
+        const button = screen.getByText(/Calculate/i);
+    
+        fireEvent.change(input1, { target: { value: num1.toString() } });
+        fireEvent.change(input2, { target: { value: num2.toString() } });
+        fireEvent.click(button);
+    
+        expect(screen.getByRole('progressbar')).toBeInTheDocument();
+    
+        await waitFor(() => expect(screen.queryByRole('progressbar')).not.toBeInTheDocument());
+    });
+    
+    it('disables the submit button while loading', async () => {
+        const num1 = 0.3;
+        const num2 = 0.2;
+        const result = 0.06;
+    
+        const mockResponse = { result: result };
+    
+        mockGetProbability.mockResolvedValueOnce(mockResponse);
+    
+        const input1 = screen.getByLabelText(/Probability 1/i);
+        const input2 = screen.getByLabelText(/Probability 2/i);
+        const button = screen.getByText(/Calculate/i);
+    
+        fireEvent.change(input1, { target: { value: num1.toString() } });
+        fireEvent.change(input2, { target: { value: num2.toString() } });
+        fireEvent.click(button);
+    
+        expect(button).toBeDisabled();
+    
+        await waitFor(() => expect(button).not.toBeDisabled());
+    });
+
+    it('displays an error message when the API call fails', async () => {
+        const num1 = 0.3;
+        const num2 = 0.2;
+        const mockError = new Error('API call failed');
+        const expectedMessage = /An error occurred while calculating the probability./i;
+
+        mockGetProbability.mockRejectedValueOnce(mockError);
+
+        const input1 = screen.getByLabelText(/Probability 1/i);
+        const input2 = screen.getByLabelText(/Probability 2/i);
+        const button = screen.getByText(/Calculate/i);
+
+        fireEvent.change(input1, { target: { value: num1.toString() } });
+        fireEvent.change(input2, { target: { value: num2.toString() } });
+        fireEvent.click(button);
+
+        await waitFor(() => expect(screen.getByText(expectedMessage)).toBeInTheDocument());
+    });
 });
