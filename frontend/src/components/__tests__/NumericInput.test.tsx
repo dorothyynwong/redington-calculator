@@ -16,19 +16,21 @@ describe("NumericInput Component", () => {
 
     it("renders without crashing", () => {
         render(<NumericInput {...defaultProps} />);
-        expect(screen.getByLabelText("Test Label")).toBeInTheDocument();
+        expect(screen.getByLabelText(defaultProps.label)).toBeInTheDocument();
     });
 
     it("displays the correct value", () => {
         render(<NumericInput {...defaultProps} />);
-        expect(screen.getByDisplayValue("0.5")).toBeInTheDocument();
+        expect(screen.getByDisplayValue(defaultProps.value)).toBeInTheDocument();
     });
 
     it("calls onChange with correct parameters when input changes", () => {
+        const value = 0.7;
+
         render(<NumericInput {...defaultProps} />);
-        const input = screen.getByLabelText("Test Label");
-        fireEvent.change(input, { target: { value: "0.7" } });
-        expect(mockOnChange).toHaveBeenCalledWith(0, "0.7");
+        const input = screen.getByLabelText(defaultProps.label);
+        fireEvent.change(input, { target: { value: value } });
+        expect(mockOnChange).toHaveBeenCalledWith(0, value);
     });
 
     it("displays error message when error is true", () => {
