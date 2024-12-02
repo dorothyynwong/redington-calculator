@@ -4,16 +4,24 @@ import { getProbability } from "../api/probabilityAPI";
 import { Box, Button, TextField } from "@mui/material";
 import Grid from '@mui/material/Grid2';
 import OperationSelector from "./OperationSelector";
-import ResultDisplay from "./ResultDisplay";
 
-const ProbabilityForm = () => {
+interface ProbabilityFormProps {
+    selectedOperation: ProbabilityOperation;
+    onOperationChange: (operation: ProbabilityOperation) => void;
+    onResultCalculated: (result: ProbabilityResponse | undefined) => void;
+}
+
+const ProbabilityForm: React.FC<ProbabilityFormProps> = ({ 
+                                                            selectedOperation, 
+                                                            onOperationChange, 
+                                                            onResultCalculated 
+                                                        }) => {
+
     const [numbers, setNumbers] = useState<string[]>(["0", "0"]);
     const [errors, setErrors] = useState<boolean[]>([false, false]);
-    const [result, setResult] = useState<ProbabilityResponse>();
-    const [selectedOperation, setSelectedOperation] = useState<ProbabilityOperation>(ProbabilityOperation.CombinedWith);
 
     const handleInputChange = (index: number) => (e: React.ChangeEvent<HTMLInputElement>) => {
-        setResult(undefined);
+        onResultCalculated(undefined);
         const value = e.target.value;
         const numericValue = parseFloat(value);
         const newNumbers = [...numbers];
@@ -26,8 +34,8 @@ const ProbabilityForm = () => {
 
     const handleSelectChange = (key: string) => {
         const value = ProbabilityOperation[key as keyof typeof ProbabilityOperation];
-        setSelectedOperation(value);
-        setResult(undefined); 
+        onOperationChange(value);
+        onResultCalculated(undefined); 
     };
 
     const handleSubmit = async (e: React.FormEvent) => {
@@ -35,10 +43,11 @@ const ProbabilityForm = () => {
         if (!errors.some(error => error)) {
             getProbability({ num1: parseFloat(numbers[0]), num2: parseFloat(numbers[1]), operation: selectedOperation })
                 .then((response) => {
-                    setResult(response);
+                    onResultCalculated(response);
                 })
                 .catch((error) => {
                     console.error(error);
+                    onResultCalculated(undefined);
                 });
         }
     };
@@ -74,14 +83,6 @@ const ProbabilityForm = () => {
                             Calculate
                         </Button>
                     </Grid>
-                </Grid>
-                <Grid size={12}>
-                    { result &&
-                        <ResultDisplay 
-                            result={result ? result.result.toString() : ''} 
-                            operation={selectedOperation} 
-                        />
-        }
                 </Grid>
             </Box>
         </form>
