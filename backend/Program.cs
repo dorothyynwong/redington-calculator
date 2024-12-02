@@ -18,7 +18,7 @@ config.AddTarget(fileTarget);
 config.AddRule(NLog.LogLevel.Info, NLog.LogLevel.Fatal, fileTarget);
 LogManager.Configuration = config;
 
-builder.Services.AddTransient<ICalculatorService<ProbabilityOperation>, ProbabilityService>();
+builder.Services.AddSingleton<ICalculatorService<ProbabilityOperation>, ProbabilityService>();
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();

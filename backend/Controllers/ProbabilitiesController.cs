@@ -1,5 +1,4 @@
 using Microsoft.AspNetCore.Mvc;
-using NLog;
 using RedingtonCalculator.Enums;
 using RedingtonCalculator.Models;
 using RedingtonCalculator.Services;
