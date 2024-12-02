@@ -9,7 +9,6 @@ const App = () => {
   const [result, setResult] = useState<ProbabilityResponse | undefined>(undefined);
   const [selectedOperation, setSelectedOperation] = useState<ProbabilityOperation>(ProbabilityOperation.CombinedWith);
 
-
   const handleResultCalculated = (calculatedResult: ProbabilityResponse | undefined) => {
     setResult(calculatedResult);
   };

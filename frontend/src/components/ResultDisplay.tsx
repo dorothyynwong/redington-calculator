@@ -6,6 +6,9 @@ interface ResultDisplayProps {
 }
 
 const ResultDisplay: React.FC<ResultDisplayProps> = ({ result, operation }) => {
+    if (result === "" || operation === "") 
+        return (<></>);
+
     return (
         <Box sx={{ flexGrow: 1 }} aria-label="Result Display">
             <Typography variant="h5" gutterBottom>

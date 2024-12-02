@@ -18,7 +18,27 @@ describe('ResultDisplay Component', () => {
         const result = "0";
         const operation = "CombinedWith";
 
-        const { container } = render(<ResultDisplay result={result} operation={operation} />);
-        expect(container).toBeInTheDocument();
+        render(<ResultDisplay result={result} operation={operation} />);
+
+        expect(screen.getByText(`Result for ${operation}`)).toBeInTheDocument();
+        expect(screen.getByText(result)).toBeInTheDocument();
+    });
+
+    it('should not be rendered if result is blank', () => {
+        const result = "";
+        const operation = "CombinedWith";
+
+        render(<ResultDisplay result={result} operation={operation} />);
+
+        expect(screen.queryByText(`Result for`)).not.toBeInTheDocument();
+    });
+
+    it('should not be rendered if operation is blank', () => {
+        const result = "0";
+        const operation = "";
+
+        render(<ResultDisplay result={result} operation={operation} />);
+
+        expect(screen.queryByText(`Result for`)).not.toBeInTheDocument();
     });
 });

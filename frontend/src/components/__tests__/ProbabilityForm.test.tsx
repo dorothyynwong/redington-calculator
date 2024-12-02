@@ -13,6 +13,11 @@ describe('ProbabilityForm', () => {
 
     beforeEach(() => {
         vi.spyOn(console, 'error').mockImplementation(() => { });
+        render(<ProbabilityForm 
+            selectedOperation={ProbabilityOperation.CombinedWith} 
+            onOperationChange={vi.fn()} 
+            onResultCalculated={vi.fn()} 
+        />);
     });
 
     afterEach(() => {
@@ -21,11 +26,6 @@ describe('ProbabilityForm', () => {
     });
 
     it('renders the form with initial values', () => {
-        render(<ProbabilityForm 
-            selectedOperation={ProbabilityOperation.CombinedWith} 
-            onOperationChange={vi.fn()} 
-            onResultCalculated={vi.fn()} 
-        />);
         expect(screen.getByLabelText(/Probability 1/i)).toHaveValue(0);
         expect(screen.getByLabelText(/Probability 2/i)).toHaveValue(0);
         expect(screen.getByText(/Calculate/i)).toBeInTheDocument();
@@ -40,11 +40,6 @@ describe('ProbabilityForm', () => {
 
         mockGetProbability.mockResolvedValueOnce(mockResponse);
 
-        render(<ProbabilityForm 
-            selectedOperation={ProbabilityOperation.CombinedWith} 
-            onOperationChange={vi.fn()} 
-            onResultCalculated={vi.fn()} 
-        />);
         const input1 = screen.getByLabelText(/Probability 1/i);
         const input2 = screen.getByLabelText(/Probability 2/i);
         const button = screen.getByText(/Calculate/i);
@@ -64,11 +59,6 @@ describe('ProbabilityForm', () => {
         const num1 = 1.1;
         const num2 = 0.5;
 
-        render(<ProbabilityForm 
-            selectedOperation={ProbabilityOperation.CombinedWith} 
-            onOperationChange={vi.fn()} 
-            onResultCalculated={vi.fn()} 
-        />);
         const input1 = screen.getByLabelText(/Probability 1/i);
         const input2 = screen.getByLabelText(/Probability 2/i);
         const button = screen.getByText(/Calculate/i);
@@ -88,11 +78,6 @@ describe('ProbabilityForm', () => {
 
         mockGetProbability.mockRejectedValueOnce(mockError);
 
-        render(<ProbabilityForm 
-            selectedOperation={ProbabilityOperation.CombinedWith} 
-            onOperationChange={vi.fn()} 
-            onResultCalculated={vi.fn()} 
-        />);
         const input1 = screen.getByLabelText(/Probability 1/i);
         const input2 = screen.getByLabelText(/Probability 2/i);
         const button = screen.getByText(/Calculate/i);
