@@ -26,7 +26,7 @@ const App = () => {
         />
         {result && (
             <ResultDisplay 
-                result={result.result.toString()} 
+                result={result.calculatedValue.toString()} 
                 operation={selectedOperation} 
             />
         )}

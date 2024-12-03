@@ -2,6 +2,6 @@ namespace RedingtonCalculator.Models
 {
     public class ProbabilityResponse
     {
-        public double Result { get; set; }
+        public double CalculatedValue { get; set; }
     }
 }

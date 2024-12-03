@@ -11,7 +11,7 @@ vi.mock('./components/ProbabilityForm', () => ({
         selectedOperation: ProbabilityOperation;
         onResultCalculated: (result: ProbabilityResponse) => void;
     }) => {
-        const mockResult: ProbabilityResponse = { result: 0.75 };
+        const mockResult: ProbabilityResponse = { calculatedValue: 0.75 };
 
         return (
             <div aria-label="Probability Form">

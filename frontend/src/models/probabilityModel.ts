@@ -10,5 +10,5 @@ export interface ProbabilityRequest {
 }
 
 export interface ProbabilityResponse {
-    result: number;
+    calculatedValue: number;
 }

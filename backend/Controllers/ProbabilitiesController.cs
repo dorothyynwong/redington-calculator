@@ -24,8 +24,8 @@ namespace RedingtonCalculator.Controllers
         {
             try
             {
-                var result = _calculatorService.Calculate(request.Num1, request.Num2, request.Operation);
-                return Ok(new ProbabilityResponse { Result = result });
+                var calculatedValue = _calculatorService.Calculate(request.Num1, request.Num2, request.Operation);
+                return Ok(new ProbabilityResponse { CalculatedValue = calculatedValue });
             }
             catch (ArgumentOutOfRangeException e)
             {

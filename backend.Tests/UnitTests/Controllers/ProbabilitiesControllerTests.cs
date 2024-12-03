@@ -42,7 +42,7 @@ namespace RedingtonCalculator.Tests
 
             var okResult = result as OkObjectResult;
             var probabilityResponse = okResult!.Value as ProbabilityResponse;
-            Assert.That(probabilityResponse!.Result, Is.EqualTo(expectedResult));
+            Assert.That(probabilityResponse!.CalculatedValue, Is.EqualTo(expectedResult));
         }
 
         [Test]
@@ -108,7 +108,7 @@ namespace RedingtonCalculator.Tests
 
             var okResult = result as OkObjectResult;
             var probabilityResponse = okResult!.Value as ProbabilityResponse;
-            Assert.That(probabilityResponse!.Result, Is.EqualTo(expected));
+            Assert.That(probabilityResponse!.CalculatedValue, Is.EqualTo(expected));
         }
     }
 }

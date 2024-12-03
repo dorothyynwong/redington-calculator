@@ -26,14 +26,14 @@ namespace RedingtonCalculator.Services
                 throw ex;
             }
 
-            double result;
+            double calculatedValue;
             switch (operation)
             {
                 case ProbabilityOperation.CombinedWith:
-                    result = CombinedWith(num1, num2);
+                    calculatedValue = CombinedWith(num1, num2);
                     break;
                 case ProbabilityOperation.Either:
-                    result = Either(num1, num2);
+                    calculatedValue = Either(num1, num2);
                     break;
                 default:
                     var ex = new ArgumentException("Invalid operation");
@@ -42,8 +42,8 @@ namespace RedingtonCalculator.Services
 
             }
 
-            _logger.Info($"Result of {operation} of {num1} and {num2} is {result}");
-            return result;
+            _logger.Info($"Result of {operation} of {num1} and {num2} is {calculatedValue}");
+            return calculatedValue;
         }
     }
 }
