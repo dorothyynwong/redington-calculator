@@ -54,17 +54,14 @@ const ProbabilityForm: React.FC<ProbabilityFormProps> = ({ selectedOperation,
                 });
                 onResultCalculated(response);
             } catch (error) {
-                if (error instanceof AxiosError) {
-                    const status = error.response?.status;
-                    if (status && status >= 500) {
-                        setApiError("Service is temporarily unavailable. Please try again later.");
-                    } else if (status && status >= 400) {
-                        setApiError("Invalid request. Please check your input.");
-                    } else {
-                        setApiError("An error occurred. Please try again.");
-                    }
+                const axiosError = error as AxiosError;
+                const status = axiosError?.response?.status;
+                if (status && status >= 500) {
+                    setApiError("Service is temporarily unavailable. Please try again later.");
+                } else if (status && status >= 400) {
+                    setApiError("Invalid request. Please check your input.");
                 } else {
-                    setApiError("Unexpected error. Please refresh and try again.");
+                    setApiError("An unexpected error occurred. Please try again.");
                 }
                 onResultCalculated(undefined);
             } finally {
@@ -76,11 +73,6 @@ const ProbabilityForm: React.FC<ProbabilityFormProps> = ({ selectedOperation,
     return (
         <form onSubmit={handleSubmit} aria-label="Probability Form">
             <Box sx={{ flexGrow: 1 }}>
-                {apiError && (
-                    <Grid size={12}>
-                        <Alert severity="error">{apiError}</Alert>
-                    </Grid>
-                )}
                 <Grid container rowSpacing={1} columnSpacing={{ xs: 1, sm: 2, md: 3 }}>
                     {numbers.map((_, index) => (
                         <Grid size={6} key={index}>
@@ -100,13 +92,17 @@ const ProbabilityForm: React.FC<ProbabilityFormProps> = ({ selectedOperation,
                             label="Select Probability Calculation Function"
                         />
                     </Grid>
-
+                    
                     <Grid size={12}>
                         <Button variant="contained" color="primary" type="submit" fullWidth disabled={loading}>
                             {loading ? <CircularProgress size={24} /> : "Calculate"}
                         </Button>
                     </Grid>
-
+                    {apiError && (
+                        <Grid size={12}>
+                            <Alert severity="error">{apiError}</Alert>
+                        </Grid>
+                    )}
                 </Grid>
             </Box>
         </form>
