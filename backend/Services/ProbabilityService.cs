@@ -7,12 +7,12 @@ namespace RedingtonCalculator.Services
     {
         private static Logger _logger = LogManager.GetCurrentClassLogger();
 
-        private double CombinedWith(double num1, double num2)
+        private static double CombinedWith(double num1, double num2)
         {
             return num1 * num2;
         }
 
-        private double Either(double num1, double num2)
+        private static double Either(double num1, double num2)
         {
             return num1 + num2 - (num1 * num2);
         }
