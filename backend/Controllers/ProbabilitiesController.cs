@@ -19,6 +19,11 @@ namespace RedingtonCalculator.Controllers
         [HttpPost]
         public IActionResult Calculate([FromBody] ProbabilityRequest request)
         {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest("Invalid Request");
+            }
+            
             if (!Enum.IsDefined(typeof(ProbabilityOperation), request.Operation))
             {
                 return BadRequest("Invalid Operation");
