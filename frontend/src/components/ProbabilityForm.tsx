@@ -18,7 +18,7 @@ const ProbabilityForm: React.FC<ProbabilityFormProps> = ({ selectedOperation,
     onOperationChange,
     onResultCalculated }) => {
     const [numbers, setNumbers] = useState<string[]>(["0", "0"]);
-    const [errors, setErrors] = useState<boolean[]>([false, false]);
+    const [inputErrors, setInputErrors] = useState<boolean[]>([false, false]);
     const [loading, setLoading] = useState<boolean>(false);
     const [apiError, setApiError] = useState<string | null>(null);
 
@@ -26,13 +26,13 @@ const ProbabilityForm: React.FC<ProbabilityFormProps> = ({ selectedOperation,
         onResultCalculated(undefined);
 
         const newNumbers = [...numbers];
-        const newErrors = [...errors];
+        const newInputErrors = [...inputErrors];
 
         newNumbers[index] = value;
-        newErrors[index] = !isValidProbability(value);
+        newInputErrors[index] = !isValidProbability(value);
 
         setNumbers(newNumbers);
-        setErrors(newErrors);
+        setInputErrors(newInputErrors);
     };
 
     const handleSelectChange = (key: string) => {
@@ -44,7 +44,7 @@ const ProbabilityForm: React.FC<ProbabilityFormProps> = ({ selectedOperation,
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         setApiError(null);
-        if (!errors.some(error => error)) {
+        if (!inputErrors.some(inputError => inputError)) {
             setLoading(true);
             try {
                 const response = await getProbability({
@@ -81,7 +81,7 @@ const ProbabilityForm: React.FC<ProbabilityFormProps> = ({ selectedOperation,
                                 value={numbers[index]}
                                 onChange={handleInputChange}
                                 index={index}
-                                error={errors[index]}
+                                error={inputErrors[index]}
                             />
                         </Grid>
                     ))}
