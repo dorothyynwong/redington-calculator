@@ -40,7 +40,7 @@ void ConfigureServices(IServiceCollection services, IConfiguration configuration
         });
     });
 
-    builder.Services.AddControllers();
+    services.AddControllers().AddJsonOptions(options => { options.JsonSerializerOptions.NumberHandling = System.Text.Json.Serialization.JsonNumberHandling.AllowReadingFromString; });
 }
 
 void ConfigureMiddleware(WebApplication app)

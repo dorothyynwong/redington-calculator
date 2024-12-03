@@ -46,44 +46,6 @@ namespace RedingtonCalculator.Tests
         }
 
         [Test]
-        public void Calculate_InvalidOperation_ReturnsBadRequestWithMessage()
-        {
-            var expectedMessage = "Invalid Operation";
-            var request = new ProbabilityRequest
-            {
-                Num1 = 0.5,
-                Num2 = 0.5,
-                Operation = (ProbabilityOperation)999 
-            };
-
-            var response = _controller!.Calculate(request);
-
-            Assert.IsInstanceOf<BadRequestObjectResult>(response);
-            Assert.That(((BadRequestObjectResult)response).Value, Is.EqualTo(expectedMessage));
-        }
-
-        [TestCase(1.01, 0.5)]
-        [TestCase(0.5, 1.01)]
-        [TestCase(1.01, 0.5)]
-        [TestCase(0.5, 1.01)]
-        public void Calculate_OutOfRangeProbabilities_ReturnsBadRequestWithMessage(double num1, double num2)
-        {
-            var expectedMessage = "Probabilities must be between 0 and 1";
-            var request = new ProbabilityRequest
-            {
-                Num1 = num1,
-                Num2 = num2,
-                Operation = ProbabilityOperation.CombinedWith
-            }; 
-
-            var response = _controller!.Calculate(request);
-
-            Assert.IsInstanceOf<BadRequestObjectResult>(response);
-            Assert.That(((BadRequestObjectResult)response).Value, Is.EqualTo(expectedMessage));
-        }
-
-        
-        [Test]
         public void Calculate_ArgumentOutOfRangeException_ReturnsBadRequestWithMessage()
         {
             var mockServiceExceptionMessage = "Test exception";

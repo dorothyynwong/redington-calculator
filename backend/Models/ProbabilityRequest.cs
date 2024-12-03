@@ -5,10 +5,10 @@ namespace RedingtonCalculator.Models
 {
     public class ProbabilityRequest
     {
-        // [Range(0, 1, ErrorMessage = "Num1 must be between 0 and 1.")]
+        [Range(0.0, 1.0, ErrorMessage = "Num1 must be between 0 and 1.")]
         public double Num1 { get; set; }
 
-        // [Range(0, 1, ErrorMessage = "Num1 must be between 0 and 1.")]
+        [Range(0.0, 1.0, ErrorMessage = "Num2 must be between 0 and 1.")]
         public double Num2 { get; set; }
 
         [EnumDataType(typeof(ProbabilityOperation))]
