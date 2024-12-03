@@ -42,7 +42,7 @@ namespace RedingtonCalculator.Services
 
             }
 
-            _logger.Info($"Result of {operation} of {num1} and {num2} is {calculatedValue}");
+            _logger.Info($"Result for {operation} of {num1} and {num2} is {calculatedValue}");
             return calculatedValue;
         }
     }
