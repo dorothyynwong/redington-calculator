@@ -38,6 +38,8 @@ namespace RedingtonCalculator.Tests
         [TestCase(0.5, 1.01, ProbabilityOperation.CombinedWith)]
         [TestCase(1.01, 0.5, ProbabilityOperation.Either)]
         [TestCase(0.5, 1.01, ProbabilityOperation.Either)]
+        [TestCase(0.5, -0.01, ProbabilityOperation.CombinedWith)]
+        [TestCase(-0.01, 0.5, ProbabilityOperation.CombinedWith)]
         public void Calculate_InvalidProbabilitiesValidOperations_ThrowsArgumentOutOfRangeException(double num1, double num2, ProbabilityOperation operation)
         {
             Assert.Throws<ArgumentOutOfRangeException>(() => 

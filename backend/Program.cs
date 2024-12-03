@@ -9,7 +9,7 @@ ConfigureServices(builder.Services, builder.Configuration);
 var app = builder.Build();
 ConfigureMiddleware(app);
 var logger = LogManager.GetCurrentClassLogger();
-logger.Info("Application has started.");
+logger.Info("Redington Calculator has started.");
 
 app.Run();
 
@@ -40,7 +40,7 @@ void ConfigureServices(IServiceCollection services, IConfiguration configuration
         });
     });
 
-    services.AddControllers().AddJsonOptions(options => { options.JsonSerializerOptions.NumberHandling = System.Text.Json.Serialization.JsonNumberHandling.AllowReadingFromString; });
+    services.AddControllers();
 }
 
 void ConfigureMiddleware(WebApplication app)
