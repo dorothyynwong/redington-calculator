@@ -7,17 +7,17 @@ namespace RedingtonCalculator.Services
     {
         private static Logger _logger = LogManager.GetCurrentClassLogger();
 
-        private static double CombinedWith(double num1, double num2)
+        private static decimal CombinedWith(decimal num1, decimal num2)
         {
             return num1 * num2;
         }
 
-        private static double Either(double num1, double num2)
+        private static decimal Either(decimal num1, decimal num2)
         {
             return num1 + num2 - (num1 * num2);
         }
 
-        public double Calculate(double num1, double num2, ProbabilityOperation operation)
+        public decimal Calculate(decimal num1, decimal num2, ProbabilityOperation operation)
         {
             if (num1 < 0 || num1 > 1 || num2 < 0 || num2 > 1)
             {
@@ -26,7 +26,7 @@ namespace RedingtonCalculator.Services
                 throw ex;
             }
 
-            double calculatedValue;
+            decimal calculatedValue;
             switch (operation)
             {
                 case ProbabilityOperation.CombinedWith:

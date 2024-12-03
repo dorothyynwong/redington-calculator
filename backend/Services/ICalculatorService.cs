@@ -2,6 +2,6 @@ namespace RedingtonCalculator.Services
 {
     public interface ICalculatorService<T>
     {
-        double Calculate(double num1, double num2, T operation);
+        decimal Calculate(decimal num1, decimal num2, T operation);
     }
 }
