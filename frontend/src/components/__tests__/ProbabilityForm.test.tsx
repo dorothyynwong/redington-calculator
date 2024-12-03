@@ -3,6 +3,7 @@ import { describe, it, expect, vi, Mock, beforeEach, afterEach } from 'vitest';
 import ProbabilityForm from '../ProbabilityForm';
 import { getProbability } from '../../api/probabilityAPI';
 import { ProbabilityOperation } from '../../models/probabilityModel';
+import { AxiosError, AxiosHeaders } from 'axios';
 
 vi.mock('../../api/probabilityAPI', () => ({
     getProbability: vi.fn()
@@ -82,9 +83,59 @@ describe('ProbabilityForm', () => {
         await waitFor(() => expect(button).not.toBeDisabled());
     });
 
-    it('displays an error message when the API call fails', async () => {
-        const mockError = new Error('API call failed');
-        const expectedMessage = /An error occurred while calculating the probability./i;
+    it('displays an error message when the API call fails with a 500 status', async () => {
+        const mockError = new AxiosError(
+            'Service Unavailable', 
+            'ERR_BAD_REQUEST', 
+            undefined, 
+            { method: 'POST' }, 
+            {
+                status: 500,
+                data: 'Internal Server Error',
+                statusText: 'Internal Server Error',
+                headers: {},
+                config: { headers: new AxiosHeaders({ 'Content-Type': 'application/json' }) }
+            }
+        );
+        const expectedMessage = /Service is temporarily unavailable. Please try again later./i;
+
+        mockIsValidProbability.mockReturnValue(true);
+        mockGetProbability.mockRejectedValueOnce(mockError);
+
+        const button = screen.getByText(/Calculate/i);
+        fireEvent.click(button);
+
+        await waitFor(() => expect(screen.getByText(expectedMessage)).toBeInTheDocument());
+    });
+
+    it('displays an error message when the API call fails with a 400 status', async () => {
+        const mockError = new AxiosError(
+            'Service Unavailable', 
+            'ERR_BAD_REQUEST', 
+            undefined, 
+            { method: 'POST' }, 
+            {
+                status: 400,
+                data: 'Invalid request.',
+                statusText: 'Invalid request.',
+                headers: {},
+                config: { headers: new AxiosHeaders({ 'Content-Type': 'application/json' }) }
+            }
+        );
+        const expectedMessage = /Invalid request. Please check your input./i;
+
+        mockIsValidProbability.mockReturnValue(true);
+        mockGetProbability.mockRejectedValueOnce(mockError);
+
+        const button = screen.getByText(/Calculate/i);
+        fireEvent.click(button);
+
+        await waitFor(() => expect(screen.getByText(expectedMessage)).toBeInTheDocument());
+    });
+
+    it('displays an error message when the API call fails with an unexpected error', async () => {
+        const mockError = new Error('Unexpected error');
+        const expectedMessage = /Unexpected error. Please refresh and try again./i;
 
         mockIsValidProbability.mockReturnValue(true);
         mockGetProbability.mockRejectedValueOnce(mockError);
