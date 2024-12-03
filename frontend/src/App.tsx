@@ -1,5 +1,4 @@
 import { useState } from 'react';
-import './App.css'
 import ProbabilityForm from './components/ProbabilityForm'
 import { ProbabilityOperation, ProbabilityResponse } from './models/probabilityModel';
 import { Box, Container, Typography } from '@mui/material';
