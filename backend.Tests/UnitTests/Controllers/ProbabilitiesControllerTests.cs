@@ -25,12 +25,12 @@ namespace RedingtonCalculator.Tests
         {
             var request = new ProbabilityRequest
             {
-                Num1 = 0.5,
-                Num2 = 0.5,
+                Num1 = 0.5m,
+                Num2 = 0.5m,
                 Operation = ProbabilityOperation.CombinedWith
             };
 
-            var expectedResult = 0.25;
+            var expectedResult = 0.25m;
 
             _mockCalculatorService!
                 .Setup(s => s.Calculate(request.Num1, request.Num2, request.Operation))
@@ -51,12 +51,12 @@ namespace RedingtonCalculator.Tests
             var mockServiceExceptionMessage = "Test exception";
             var request = new ProbabilityRequest
             {
-                Num1 = 0.5,
-                Num2 = 0.5,
+                Num1 = 0.5m,
+                Num2 = 0.5m,
                 Operation = ProbabilityOperation.CombinedWith
             }; 
 
-            _mockCalculatorService!.Setup(s => s.Calculate(It.IsAny<double>(), It.IsAny<double>(), It.IsAny<ProbabilityOperation>()))
+            _mockCalculatorService!.Setup(s => s.Calculate(It.IsAny<decimal>(), It.IsAny<decimal>(), It.IsAny<ProbabilityOperation>()))
                                 .Throws(new ArgumentOutOfRangeException("", mockServiceExceptionMessage));
 
             var response = _controller!.Calculate(request);
@@ -71,12 +71,12 @@ namespace RedingtonCalculator.Tests
             var mockServiceExceptionMessage = "Test exception";
             var request = new ProbabilityRequest
             {
-                Num1 = 0.5,
-                Num2 = 0.5,
+                Num1 = 0.5m,
+                Num2 = 0.5m,
                 Operation = ProbabilityOperation.CombinedWith
             }; 
 
-            _mockCalculatorService!.Setup(s => s.Calculate(It.IsAny<double>(), It.IsAny<double>(), It.IsAny<ProbabilityOperation>()))
+            _mockCalculatorService!.Setup(s => s.Calculate(It.IsAny<decimal>(), It.IsAny<decimal>(), It.IsAny<ProbabilityOperation>()))
                                 .Throws(new ArgumentException(mockServiceExceptionMessage));
 
             var response = _controller!.Calculate(request);
@@ -89,7 +89,7 @@ namespace RedingtonCalculator.Tests
         [TestCase(0, 0, ProbabilityOperation.Either, 0)]
         [TestCase(1, 1, ProbabilityOperation.CombinedWith, 1)]
         [TestCase(1, 1, ProbabilityOperation.Either, 1)]
-        public void Calculate_ValidOperationBoundaryProbabilities_ReturnsOkExpectedResult(double num1, double num2, ProbabilityOperation operation, double expected)
+        public void Calculate_ValidOperationBoundaryProbabilities_ReturnsOkExpectedResult(decimal num1, decimal num2, ProbabilityOperation operation, decimal expected)
         {
             var request = new ProbabilityRequest
             {

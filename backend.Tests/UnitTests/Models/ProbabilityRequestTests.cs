@@ -14,7 +14,7 @@ namespace RedingtonCalculator.Tests
         [TestCase(0, 0, ProbabilityOperation.Either, true)]
         [TestCase(1, 1, ProbabilityOperation.Either, true)]
         [TestCase(0.5, 0.5, (ProbabilityOperation)999, false)]
-        public void ProbabilityRequest_ValidationTests(double num1, double num2, ProbabilityOperation operation, bool isValid)
+        public void ProbabilityRequest_ValidationTests(decimal num1, decimal num2, ProbabilityOperation operation, bool isValid)
         {
             var request = new ProbabilityRequest
             {
