@@ -5,7 +5,7 @@ namespace RedingtonCalculator.Services
 {
     public class ProbabilityService : ICalculatorService<ProbabilityOperation>
     {
-        NLog.ILogger Logger = LogManager.GetCurrentClassLogger();
+        private static Logger _logger = LogManager.GetCurrentClassLogger();
 
         private double CombinedWith(double num1, double num2)
         {
@@ -16,13 +16,14 @@ namespace RedingtonCalculator.Services
         {
             return num1 + num2 - (num1 * num2);
         }
-        
+
         public double Calculate(double num1, double num2, ProbabilityOperation operation)
         {
             if (num1 < 0 || num1 > 1 || num2 < 0 || num2 > 1)
             {
-                Logger.Error($"Probabilities must be between 0 and 1. ${num1} and ${num2} are provided instead.");
-                throw new ArgumentOutOfRangeException("Probabilities must be between 0 and 1");
+                var ex = new ArgumentOutOfRangeException("Probabilities must be between 0 and 1");
+                _logger.Error(ex, $"Invalid probabilities provided: {num1} and {num2}");
+                throw ex;
             }
 
             double result;
@@ -35,11 +36,13 @@ namespace RedingtonCalculator.Services
                     result = Either(num1, num2);
                     break;
                 default:
-                    Logger.Error($"Invalid operation. {operation} is given.");
-                    throw new ArgumentException("Invalid operation");
+                    var ex = new ArgumentException("Invalid operation");
+                    _logger.Error(ex, $"Invalid operation provided: {operation}");
+                    throw ex;
+
             }
-            
-            Logger.Info($"Result of {operation} of {num1} and {num2} is {result}");
+
+            _logger.Info($"Result of {operation} of {num1} and {num2} is {result}");
             return result;
         }
     }

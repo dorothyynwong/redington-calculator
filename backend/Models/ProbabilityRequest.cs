@@ -1,11 +1,17 @@
+using System.ComponentModel.DataAnnotations;
 using RedingtonCalculator.Enums;
 
 namespace RedingtonCalculator.Models
 {
     public class ProbabilityRequest
     {
+        // [Range(0, 1, ErrorMessage = "Num1 must be between 0 and 1.")]
         public double Num1 { get; set; }
+
+        // [Range(0, 1, ErrorMessage = "Num1 must be between 0 and 1.")]
         public double Num2 { get; set; }
+
+        [EnumDataType(typeof(ProbabilityOperation))]
         public ProbabilityOperation Operation { get; set; }
     }
 }

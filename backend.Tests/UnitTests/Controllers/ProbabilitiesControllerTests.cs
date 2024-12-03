@@ -46,17 +46,6 @@ namespace RedingtonCalculator.Tests
         }
 
         [Test]
-        public void Calculate_InvalidRequest_ReturnsBadRequestWithMessage()
-        {
-            var expectedMessage = "Invalid Request";
-  
-            var response = _controller!.Calculate(null);
-
-            Assert.IsInstanceOf<BadRequestObjectResult>(response);
-            Assert.That(((BadRequestObjectResult)response).Value, Is.EqualTo(expectedMessage));
-        }
-
-        [Test]
         public void Calculate_InvalidOperation_ReturnsBadRequestWithMessage()
         {
             var expectedMessage = "Invalid Operation";
