@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import ProbabilityForm from './components/ProbabilityForm'
+import ProbabilityForm from './components/ProbabilityForm';
 import { ProbabilityOperation, ProbabilityResponse } from './models/probabilityModel';
 import { Box, Container, Typography } from '@mui/material';
 import ResultDisplay from './components/ResultDisplay';
@@ -13,25 +13,25 @@ const App = () => {
   };
 
   return (
-    <Container maxWidth="sm">
-    <Box sx={{ my: 4 }}>
+    <Container maxWidth="sm" sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '100vh', textAlign: 'center' }}>
+      <Box sx={{ my: 4 }}>
         <Typography variant="h4" component="h1" gutterBottom>
-            Probability Calculator
+          Probability Calculator
         </Typography>
-        <ProbabilityForm 
-            selectedOperation={selectedOperation}
-            onOperationChange={setSelectedOperation}
-            onResultCalculated={handleResultCalculated} 
+        <ProbabilityForm
+          selectedOperation={selectedOperation}
+          onOperationChange={setSelectedOperation}
+          onResultCalculated={handleResultCalculated}
         />
         {result && (
-            <ResultDisplay 
-                result={result.calculatedValue.toString()} 
-                operation={selectedOperation} 
-            />
+          <ResultDisplay
+            result={result.calculatedValue.toString()}
+            operation={selectedOperation}
+          />
         )}
-    </Box>
-</Container>
-  )
-}
+      </Box>
+    </Container>
+  );
+};
 
-export default App
+export default App;
