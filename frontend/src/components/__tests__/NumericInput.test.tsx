@@ -11,6 +11,7 @@ describe("NumericInput Component", () => {
         value: "0.5",
         index: 0,
         error: false,
+        step: 0.01,
         onChange: mockOnChange,
     };
 

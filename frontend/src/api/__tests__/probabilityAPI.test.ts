@@ -18,7 +18,7 @@ describe('getProbability', () => {
     });
 
     it('should return data when API call is successful', async () => {
-        const mockResponse: ProbabilityResponse = { result: 0.25 };
+        const mockResponse: ProbabilityResponse = { calculatedValue: 0.25 };
 
         mockPost.mockResolvedValue({ data: mockResponse });
 

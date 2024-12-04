@@ -14,8 +14,8 @@ namespace RedingtonCalculator.Tests
             _probabilityService = new ProbabilityService();
         }
 
-        [TestCase(0.5, 0.5, ProbabilityOperation.CombinedWith, 0.25)]
-        [TestCase(0.5, 0.5, ProbabilityOperation.Either, 0.75)]
+        [TestCase(0.1, 0.6, ProbabilityOperation.CombinedWith, 0.06)]
+        [TestCase(0.1, 0.6, ProbabilityOperation.Either, 0.64)]
         public void Calculate_ValidOperations_ReturnsExpectedResult(decimal num1, decimal num2, ProbabilityOperation operation, decimal expected)
         {
             var result = _probabilityService!.Calculate(num1, num2, operation);
