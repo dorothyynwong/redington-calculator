@@ -21,6 +21,7 @@
 - Shows **Result for CombinedWith 0.25**
 - Log entry for **Result for CombinedWith of 0.5 and 0.5 is 0.25** is recorded to logs\probability\YYYY-MM-DD.log
 - No error or log in browser console
+- While using web browser, the step of the numeric fields should be 0.01
 
 #### Test 2 - Normal case for Either
 **Input**
