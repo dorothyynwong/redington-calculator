@@ -27,7 +27,7 @@ dotnet watch run
 
 ### Inside the `frontend/` directory
 ```bash
-npm start
+npm run dev
 ```
 
 ## Unit testing the project

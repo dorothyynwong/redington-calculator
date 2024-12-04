@@ -38,22 +38,23 @@
 - Probability 1: 0.2
 - Probability 2: 0.3
 - Calculation Function: CombinedWith
-- Calculation Function: Either
-- Calculation Function: CombinedWith
 
-**Expected Result**
-- Result should be **0.06, 0.44 and then 0.06** and all should be recorded to log properly
+**Stpes and Expected Result**
+1. Result is **0.06** after Calculation button is clicked
+2. Changed Calculation Function to Either, result is **0.44** 
+3. Changed Calculation Function back to CombinedWith, result is **0.06**
+
 - Result should be disappeared after each switch of calculation function
 - No error or log in browser console
 
 #### Test 4 - Change probabilities numbers
-**Input**
-**Step 1**
+
+**Step 1 Input**
 - Probability 1: 0.2
 - Probability 2: 0.3
 - Calculation Function: Either
 
-**Step 2**
+**Step 2 Input**
 - Change Probability 1 to 0.4
 - Change Probability 2 to 0.7
 - Calculation Function remains Either
