@@ -39,7 +39,7 @@
 - Probability 2: 0.3
 - Calculation Function: CombinedWith
 
-**Stpes and Expected Result**
+**Steps and Expected Result**
 1. Result is **0.06** after Calculation button is clicked
 2. Changed Calculation Function to Either, result is **0.44** 
 3. Changed Calculation Function back to CombinedWith, result is **0.06**
