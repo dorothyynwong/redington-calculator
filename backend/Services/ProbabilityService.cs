@@ -39,7 +39,6 @@ namespace RedingtonCalculator.Services
                     var ex = new ArgumentException("Invalid operation");
                     _logger.Error(ex, $"Invalid operation provided: {operation}");
                     throw ex;
-
             }
 
             _logger.Info($"Result for {operation} of {num1} and {num2} is {calculatedValue}");
