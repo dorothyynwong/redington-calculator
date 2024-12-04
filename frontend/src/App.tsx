@@ -23,12 +23,14 @@ const App = () => {
           onOperationChange={setSelectedOperation}
           onResultCalculated={handleResultCalculated}
         />
-        {result && (
-          <ResultDisplay
-            result={result.calculatedValue.toString()}
-            operation={selectedOperation}
-          />
-        )}
+        <Box sx={{ my:1, minHeight: '10vh', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+          {result ? (
+            <ResultDisplay
+              result={result.calculatedValue.toString()}
+              operation={selectedOperation}
+            />
+          )  :<></>}
+        </Box>
       </Box>
     </Container>
   );
