@@ -35,6 +35,10 @@ namespace RedingtonCalculator.Controllers
             {
                 return BadRequest(e.Message);
             }
+            catch (Exception e) 
+            {
+                return StatusCode(500, $"An unexpected error occurred: {e.Message}");
+            }
         }
     }
 }

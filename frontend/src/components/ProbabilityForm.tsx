@@ -82,6 +82,7 @@ const ProbabilityForm: React.FC<ProbabilityFormProps> = ({ selectedOperation,
                                 onChange={handleInputChange}
                                 index={index}
                                 error={inputErrors[index]}
+                                step={0.01}
                             />
                         </Grid>
                     ))}

@@ -7,7 +7,6 @@ namespace RedingtonCalculator.Tests
     [TestFixture]
     public class ProbabilityRequestTests
     {
-        [Test]
         [TestCase(0.5, 0.5, ProbabilityOperation.CombinedWith, true)]
         [TestCase(-0.01, 0.5, ProbabilityOperation.CombinedWith, false)]
         [TestCase(0.5, 1.01, ProbabilityOperation.CombinedWith, false)]

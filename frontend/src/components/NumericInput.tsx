@@ -6,10 +6,11 @@ interface NumericInputProps {
     value: string;
     index: number;
     error: boolean;
+    step: number;
     onChange: (index: number, value: string) => void;
 }
 
-const NumericInput: React.FC<NumericInputProps> = ({ value, label, index, error, onChange }) => {
+const NumericInput: React.FC<NumericInputProps> = ({ value, label, index, error, step, onChange }) => {
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         onChange(index, e.target.value);
     };
@@ -24,7 +25,7 @@ const NumericInput: React.FC<NumericInputProps> = ({ value, label, index, error,
             variant="outlined"
             error={error}
             helperText={error ? "Value must be between 0 and 1" : ""}
-            slotProps={{ htmlInput: { step: 0.01 } }}
+            slotProps={{ htmlInput: { step } }}
         />
     );
 };

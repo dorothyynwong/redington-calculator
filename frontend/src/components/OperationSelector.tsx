@@ -11,18 +11,18 @@ const OperationSelector:React.FC<OperationSelectorProps> = ({ operations, onSele
         <FormControl>
             <FormLabel id="operations-label" aria-label="Operation Selector">{label}</FormLabel>
             <RadioGroup
-            row
-            aria-labelledby="operations-label"
-            name="calculation-functions-radio-buttons-group"
-            defaultValue={operations[0] as string}
-            onChange={(event) => onSelectChange(event.target.value)}
+                row
+                aria-labelledby="operations-label"
+                name="calculation-functions-radio-buttons-group"
+                defaultValue={operations[0] as string}
+                onChange={(event) => onSelectChange(event.target.value)}
             >
             {operations.map((operation) => (
                 <FormControlLabel
-                key={operation}
-                value={operation}
-                control={<Radio />}
-                label={operation}
+                    key={operation}
+                    value={operation}
+                    control={<Radio />}
+                    label={operation}
                 />
             ))}
             </RadioGroup>
