@@ -11,7 +11,7 @@ namespace RedingtonCalculator.Models
         [Range(0.0, 1.0, ErrorMessage = "Num2 must be between 0 and 1.")]
         public decimal Num2 { get; set; }
 
-        [EnumDataType(typeof(ProbabilityOperation))]
+        [EnumDataType(typeof(ProbabilityOperation), ErrorMessage = "Invalid operation specified.")]
         public ProbabilityOperation Operation { get; set; }
     }
 }
