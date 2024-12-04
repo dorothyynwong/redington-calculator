@@ -12,7 +12,6 @@ namespace RedingtonCalculator.Controllers
     public class ProbabilitiesController : ControllerBase
     {
         private readonly ICalculatorService<ProbabilityOperation> _calculatorService;
-        private static Logger _logger = LogManager.GetCurrentClassLogger();
 
         public ProbabilitiesController(ICalculatorService<ProbabilityOperation> calculatorService)
         {

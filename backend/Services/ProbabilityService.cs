@@ -5,7 +5,7 @@ namespace RedingtonCalculator.Services
 {
     public class ProbabilityService : ICalculatorService<ProbabilityOperation>
     {
-        private static Logger _logger = LogManager.GetCurrentClassLogger();
+        private static readonly Logger _logger = LogManager.GetCurrentClassLogger();
 
         private static decimal CombinedWith(decimal num1, decimal num2)
         {
@@ -22,7 +22,6 @@ namespace RedingtonCalculator.Services
             if (num1 < 0 || num1 > 1 || num2 < 0 || num2 > 1)
             {
                 var ex = new ArgumentOutOfRangeException("Probabilities must be between 0 and 1");
-                _logger.Error(ex, $"Invalid probabilities provided: {num1} and {num2}");
                 throw ex;
             }
 
@@ -37,7 +36,6 @@ namespace RedingtonCalculator.Services
                     break;
                 default:
                     var ex = new ArgumentException("Invalid operation");
-                    _logger.Error(ex, $"Invalid operation provided: {operation}");
                     throw ex;
             }
 

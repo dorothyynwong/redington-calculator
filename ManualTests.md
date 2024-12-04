@@ -9,7 +9,6 @@
 **Expected Result**
 - Heading, probability form, and calculate button are displayed, with no result before clicking the button
 - **Redington Calculator has started.** is recorded to logs\probability\YYYY-MM-DD.log under bin directory
-- NLog internal log is recorded in logs\nlog-internal.log under root directory of backend
 
 #### Test 1 - Normal case for CombinedWith
 **Input**
