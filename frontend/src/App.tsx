@@ -23,7 +23,7 @@ const App = () => {
           onOperationChange={setSelectedOperation}
           onResultCalculated={handleResultCalculated}
         />
-        <Box sx={{ my:1, minHeight: '20vh', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+        <Box sx={{ minHeight: '20vh', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
           {result ? (
             <ResultDisplay
               result={result.calculatedValue.toString()}
