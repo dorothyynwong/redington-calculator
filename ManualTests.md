@@ -116,7 +116,7 @@
 - No log should be recorded
 - No error or log in browser console
 
-### Failure Tests with connection problem
+### Failure Tests with server problem
 
 #### Test 1 - Error if backend server not started
 #### Setup
@@ -136,7 +136,10 @@
 
 #### Test 2 - Error when invalid probabilities are got in backend
 1. Start frontend
-2. Start debug at backend, set breakpoint at Calculate method in ProbabilityService  if (num1 < 0 || num1 > 1 || num2 < 0 || num2 > 1)
+2. Start debug at backend, set breakpoint at Calculate method in ProbabilityService at line 
+    ```bash
+    if (num1 < 0 || num1 > 1 || num2 < 0 || num2 > 1)
+    ```
 3. Input valid values in at frontend
 4. change the value of num1 to 2 in debugger variables
 5. continue the debug
