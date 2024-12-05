@@ -17,6 +17,11 @@ namespace RedingtonCalculator.Services
             return num1 + num2 - (num1 * num2);
         }
 
+        private static decimal Given(decimal num1, decimal num2)
+        {
+            return num1 / num2;
+        }
+
         public decimal Calculate(decimal num1, decimal num2, ProbabilityOperation operation)
         {
             if (num1 < 0 || num1 > 1 || num2 < 0 || num2 > 1)
@@ -33,6 +38,9 @@ namespace RedingtonCalculator.Services
                     break;
                 case ProbabilityOperation.Either:
                     calculatedValue = Either(num1, num2);
+                    break;
+                case ProbabilityOperation.Given:
+                    calculatedValue = Given(num1, num2);
                     break;
                 default:
                     var ex = new ArgumentException("Invalid operation");

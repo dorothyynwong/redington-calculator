@@ -1,6 +1,7 @@
 export enum ProbabilityOperation {
     CombinedWith =  "CombinedWith",
     Either = "Either",
+    Given = "Given"
 }
 
 export interface ProbabilityRequest {
