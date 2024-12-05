@@ -6,20 +6,19 @@ namespace RedingtonCalculator.Services
     public class ProbabilityService : ICalculatorService<ProbabilityOperation>
     {
         private static readonly Logger _logger = LogManager.GetCurrentClassLogger();
+        private readonly Dictionary<ProbabilityOperation, IProbabilityCalculator> _operations;
 
-        private static decimal CombinedWith(decimal num1, decimal num2)
+        public ProbabilityService(
+            IProbabilityCalculator combinedWithOperation,
+            IProbabilityCalculator eitherOperation,
+            IProbabilityCalculator givenOperation)
         {
-            return num1 * num2;
-        }
-
-        private static decimal Either(decimal num1, decimal num2)
-        {
-            return num1 + num2 - (num1 * num2);
-        }
-
-        private static decimal Given(decimal num1, decimal num2)
-        {
-            return num1 / num2;
+            _operations = new Dictionary<ProbabilityOperation, IProbabilityCalculator>
+            {
+                { ProbabilityOperation.CombinedWith, combinedWithOperation },
+                { ProbabilityOperation.Either, eitherOperation },
+                { ProbabilityOperation.Given, givenOperation }
+            };
         }
 
         public decimal Calculate(decimal num1, decimal num2, ProbabilityOperation operation)
@@ -30,25 +29,19 @@ namespace RedingtonCalculator.Services
                 throw ex;
             }
 
-            decimal calculatedValue;
-            switch (operation)
+            if (_operations.ContainsKey(operation))
             {
-                case ProbabilityOperation.CombinedWith:
-                    calculatedValue = CombinedWith(num1, num2);
-                    break;
-                case ProbabilityOperation.Either:
-                    calculatedValue = Either(num1, num2);
-                    break;
-                case ProbabilityOperation.Given:
-                    calculatedValue = Given(num1, num2);
-                    break;
-                default:
-                    var ex = new ArgumentException("Invalid operation");
-                    throw ex;
-            }
+                var selectedOperation = _operations[operation];
+                decimal calculatedValue = selectedOperation.Execute(num1, num2);
 
-            _logger.Info($"Result for {operation} of {num1} and {num2} is {calculatedValue}");
-            return calculatedValue;
+                _logger.Info($"Result for {operation} of {num1} and {num2} is {calculatedValue}");
+                return calculatedValue;
+            }
+            else
+            {
+                var ex = new ArgumentException("Invalid operation");
+                throw ex;
+            }
         }
     }
 }

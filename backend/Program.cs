@@ -25,7 +25,12 @@ void ConfigureLogging(IConfiguration configuration)
 
 void ConfigureServices(IServiceCollection services, IConfiguration configuration)
 {
-    services.AddSingleton<ICalculatorService<ProbabilityOperation>, ProbabilityService>();
+    services.AddScoped<ICalculatorService<ProbabilityOperation>, ProbabilityService>();
+
+    services.AddScoped<IProbabilityCalculator, CombinedWithCalculator>();
+    services.AddScoped<IProbabilityCalculator, EitherCalculator>();
+    services.AddScoped<IProbabilityCalculator, GivenCalculator>();
+
     services.AddEndpointsApiExplorer();
     services.AddSwaggerGen();
 
