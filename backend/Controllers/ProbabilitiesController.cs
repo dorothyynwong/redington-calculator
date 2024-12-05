@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
+using RedingtonCalculator.Attributes;
 using RedingtonCalculator.Enums;
 using RedingtonCalculator.Models;
 using RedingtonCalculator.Services;
@@ -14,19 +15,26 @@ namespace RedingtonCalculator.Controllers
         public ProbabilitiesController(
             IEnumerable<IProbabilityCalculator> calculators)
         {
-            _operations = new Dictionary<ProbabilityOperation, IProbabilityCalculator>();
-
-            foreach (var calculator in calculators)
-            {
-                if (calculator is CombinedWithCalculator)
-                    _operations[ProbabilityOperation.CombinedWith] = calculator;
-                else if (calculator is EitherCalculator)
-                    _operations[ProbabilityOperation.Either] = calculator;
-                else if (calculator is GivenCalculator)
-                    _operations[ProbabilityOperation.Given] = calculator;
-            }
+            _operations = calculators.ToDictionary(
+                GetOperationFromCalculator,
+                calculator => calculator);
         }
-        
+
+        private ProbabilityOperation GetOperationFromCalculator(IProbabilityCalculator calculator)
+        {
+            var attribute = calculator.GetType()
+                .GetCustomAttributes(typeof(OperationAttribute<>), false)
+                .Cast<OperationAttribute<ProbabilityOperation>>()
+                .FirstOrDefault();
+
+            if (attribute != null)
+            {
+                return attribute.Operation;
+            }
+
+            throw new InvalidOperationException("Operation not specified.");
+        }
+
         [HttpPost]
         public IActionResult Calculate([FromBody] ProbabilityRequest request)
         {
