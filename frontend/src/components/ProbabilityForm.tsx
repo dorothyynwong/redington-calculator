@@ -1,12 +1,8 @@
-// import { useState } from "react";
 import { ProbabilityOperation, ProbabilityResponse } from "../models/probabilityModel";
-// import { getProbability } from "../api/probabilityAPI";
 import { Box, Button, CircularProgress, Alert } from "@mui/material";
 import Grid from '@mui/material/Grid2';
 import OperationSelector from "./OperationSelector";
-// import { isValidProbability } from "../utilities/probabilityValidation";
 import NumericInput from "./NumericInput";
-// import { AxiosError } from "axios";
 import { useProbabilityForm } from "../hooks/useProbabilityForm";
 import { useProbabilityAPI } from "../hooks/useProbabilityAPI";
 
@@ -19,23 +15,6 @@ interface ProbabilityFormProps {
 const ProbabilityForm: React.FC<ProbabilityFormProps> = ({ selectedOperation,
     onOperationChange,
     onResultCalculated }) => {
-    // const [numbers, setNumbers] = useState<string[]>(["0", "0"]);
-    // const [inputErrors, setInputErrors] = useState<boolean[]>([false, false]);
-    // const [loading, setLoading] = useState<boolean>(false);
-    // const [apiError, setApiError] = useState<string | null>(null);
-
-    // const handleInputChange = (index: number, value: string) => {
-    //     onResultCalculated(undefined);
-
-    //     const newNumbers = [...numbers];
-    //     const newInputErrors = [...inputErrors];
-
-    //     newNumbers[index] = value;
-    //     newInputErrors[index] = !isValidProbability(value);
-
-    //     setNumbers(newNumbers);
-    //     setInputErrors(newInputErrors);
-    // };
 
     const { numbers, inputErrors, handleInputChange, hasErrors } = useProbabilityForm(() =>
         onResultCalculated(undefined)
