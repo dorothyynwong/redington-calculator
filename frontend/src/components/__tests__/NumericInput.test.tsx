@@ -12,6 +12,7 @@ describe("NumericInput Component", () => {
         index: 0,
         error: false,
         step: 0.01,
+        helperText: "helper text",
         onChange: mockOnChange,
     };
 
@@ -36,12 +37,12 @@ describe("NumericInput Component", () => {
 
     it("displays error message when error is true", () => {
         render(<NumericInput {...defaultProps} error={true} />);
-        expect(screen.getByText("Value must be between 0 and 1")).toBeInTheDocument();
+        expect(screen.getByText(defaultProps.helperText)).toBeInTheDocument();
     });
 
     it("does not display error message when error is false", () => {
         render(<NumericInput {...defaultProps} error={false} />);
-        expect(screen.queryByText("Value must be between 0 and 1")).not.toBeInTheDocument();
+        expect(screen.queryByText(defaultProps.helperText)).not.toBeInTheDocument();
     });
 
     it("has input type as number", () => {

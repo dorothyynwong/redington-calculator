@@ -83,6 +83,7 @@ const ProbabilityForm: React.FC<ProbabilityFormProps> = ({ selectedOperation,
                                 index={index}
                                 error={inputErrors[index]}
                                 step={0.01}
+                                helperText="Value must be between 0 and 1"
                             />
                         </Grid>
                     ))}
