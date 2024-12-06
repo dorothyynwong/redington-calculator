@@ -1,12 +1,14 @@
-import { useState } from "react";
+// import { useState } from "react";
 import { ProbabilityOperation, ProbabilityResponse } from "../models/probabilityModel";
-import { getProbability } from "../api/probabilityAPI";
+// import { getProbability } from "../api/probabilityAPI";
 import { Box, Button, CircularProgress, Alert } from "@mui/material";
 import Grid from '@mui/material/Grid2';
 import OperationSelector from "./OperationSelector";
-import { isValidProbability } from "../utilities/probabilityValidation";
+// import { isValidProbability } from "../utilities/probabilityValidation";
 import NumericInput from "./NumericInput";
-import { AxiosError } from "axios";
+// import { AxiosError } from "axios";
+import { useProbabilityForm } from "../hooks/useProbabilityForm";
+import { useProbabilityAPI } from "../hooks/useProbabilityAPI";
 
 interface ProbabilityFormProps {
     selectedOperation: ProbabilityOperation;
@@ -17,23 +19,28 @@ interface ProbabilityFormProps {
 const ProbabilityForm: React.FC<ProbabilityFormProps> = ({ selectedOperation,
     onOperationChange,
     onResultCalculated }) => {
-    const [numbers, setNumbers] = useState<string[]>(["0", "0"]);
-    const [inputErrors, setInputErrors] = useState<boolean[]>([false, false]);
-    const [loading, setLoading] = useState<boolean>(false);
-    const [apiError, setApiError] = useState<string | null>(null);
+    // const [numbers, setNumbers] = useState<string[]>(["0", "0"]);
+    // const [inputErrors, setInputErrors] = useState<boolean[]>([false, false]);
+    // const [loading, setLoading] = useState<boolean>(false);
+    // const [apiError, setApiError] = useState<string | null>(null);
 
-    const handleInputChange = (index: number, value: string) => {
-        onResultCalculated(undefined);
+    // const handleInputChange = (index: number, value: string) => {
+    //     onResultCalculated(undefined);
 
-        const newNumbers = [...numbers];
-        const newInputErrors = [...inputErrors];
+    //     const newNumbers = [...numbers];
+    //     const newInputErrors = [...inputErrors];
 
-        newNumbers[index] = value;
-        newInputErrors[index] = !isValidProbability(value);
+    //     newNumbers[index] = value;
+    //     newInputErrors[index] = !isValidProbability(value);
 
-        setNumbers(newNumbers);
-        setInputErrors(newInputErrors);
-    };
+    //     setNumbers(newNumbers);
+    //     setInputErrors(newInputErrors);
+    // };
+
+    const { numbers, inputErrors, handleInputChange, hasErrors } = useProbabilityForm(() =>
+        onResultCalculated(undefined)
+    );
+    const { calculateProbability, loading, apiError } = useProbabilityAPI();
 
     const handleSelectChange = (key: string) => {
         const value = ProbabilityOperation[key as keyof typeof ProbabilityOperation];
@@ -43,30 +50,13 @@ const ProbabilityForm: React.FC<ProbabilityFormProps> = ({ selectedOperation,
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
-        setApiError(null);
-        if (!inputErrors.some(inputError => inputError)) {
-            setLoading(true);
-            try {
-                const response = await getProbability({
-                    num1: parseFloat(numbers[0]),
-                    num2: parseFloat(numbers[1]),
-                    operation: selectedOperation
-                });
-                onResultCalculated(response);
-            } catch (error) {
-                const axiosError = error as AxiosError;
-                const status = axiosError?.response?.status;
-                if (status && status >= 500) {
-                    setApiError("Service is temporarily unavailable. Please try again later.");
-                } else if (status && status >= 400) {
-                    setApiError("Invalid request. Please check your input.");
-                } else {
-                    setApiError("An unexpected error occurred. Please try again.");
-                }
-                onResultCalculated(undefined);
-            } finally {
-                setLoading(false);
-            }
+        if (!hasErrors) {
+            const response = await calculateProbability(
+                parseFloat(numbers[0]),
+                parseFloat(numbers[1]),
+                selectedOperation
+            );
+            onResultCalculated(response);
         }
     };
 
